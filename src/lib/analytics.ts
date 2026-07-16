@@ -110,7 +110,7 @@ export function initAnalytics() {
 }
 
 export function hasRealCheckout(): boolean {
-  const base = APP_CONFIG.CHECKOUT_URL
+  const base = APP_CONFIG.CHECKOUT_URL as string
   return Boolean(base && base !== 'CHECKOUT_URL' && /^https?:\/\//i.test(base))
 }
 
