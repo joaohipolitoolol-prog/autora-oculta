@@ -8,13 +8,12 @@ type Props = {
   ctaLabel?: string
   ctaId?: string
   storyTitle?: string
-  /** Solo el primer OfferBox de la página debe anclar #oferta */
   anchor?: boolean
 }
 
 export function OfferBox({
-  title = 'Tu historia ya tiene un nombre, un conflicto y un universo. Ahora necesitas el método para terminarla.',
-  subtitle = 'Desbloquea la estructura de capítulos, los perfiles de personajes, los prompts y el plan de publicación para desarrollar tu proyecto paso a paso.',
+  title = 'Tu historia ya tiene una base. Ahora necesitas el método para desarrollarla.',
+  subtitle = 'Desbloquea la estructura, los personajes, los prompts y el plan para convertir este concepto en una historia que puedas desarrollar, publicar y presentar.',
   ctaLabel,
   ctaId = 'offer',
   storyTitle,
@@ -40,10 +39,10 @@ export function OfferBox({
 
       <ul className="mx-auto mt-6 max-w-md space-y-2 text-left text-base text-ivory-muted" role="list">
         {[
-          'Tu concepto del test como punto de partida (título, seudónimo, premisa)',
-          'Prompts listos para pegar en ChatGPT / Claude / Gemini',
-          'Estructura de capítulos + evolución del romance',
-          'Sinopsis, descripción de venta y plan de 7 días',
+          'Proyecto inicial del test (título, seudónimo, premisa)',
+          'Estructura de capítulos + perfiles de personajes',
+          'Prompts para ChatGPT / Claude / Gemini',
+          'Sinopsis, publicación y plan de 7 días',
         ].map((item) => (
           <li key={item} className="flex gap-2 border border-white/10 bg-elevated/50 px-3 py-2.5">
             <span className="text-gold" aria-hidden="true">
@@ -54,33 +53,28 @@ export function OfferBox({
         ))}
       </ul>
 
-      <div className="mx-auto mt-6 max-w-md rounded-[2px] border border-white/10 bg-bg/40 p-4 text-left">
-        <p className="font-accent text-[0.62rem] tracking-[0.14em] text-gold uppercase">
-          Qué pasa al pagar
-        </p>
-        <ol className="mt-3 space-y-2 text-sm text-ivory-muted md:text-base">
-          <li>1. Pagas en Hotmart (seguro).</li>
-          <li>2. Acceso inmediato al método digital.</li>
-          <li>3. Continúas desde el concepto que acabas de crear.</li>
-        </ol>
-      </div>
-
       <p className="mt-6 text-ivory-faint">
         Precio normal <s>{APP_CONFIG.PRICE_REFERENCE}</s>
       </p>
       <p className="font-display text-5xl text-gold-soft">{APP_CONFIG.PRICE_CURRENT}</p>
       <p className="mt-1 text-base text-ivory-faint">Un solo pago · acceso inmediato</p>
 
+      {/* Frase obrigatória ANTES do botão */}
+      <aside className="mx-auto mt-6 max-w-lg rounded-[2px] border border-gold/30 bg-bg/50 p-4 text-left">
+        <p className="text-base leading-relaxed text-ivory-muted">
+          <strong className="text-ivory">Autora Oculta no genera una novela completa automáticamente.</strong>{' '}
+          Recibirás un proyecto inicial personalizado y un método guiado para desarrollarlo con
+          prompts, estructuras y herramientas de inteligencia artificial.
+        </p>
+      </aside>
+
       <div className="mt-6">
         <CTAButton full onClick={() => goToCheckout(ctaId)}>
           {label}
         </CTAButton>
       </div>
-      <p className="mt-3 text-base text-ivory-faint">
-        No es una novela completa automática. Es el método para desarrollar esta idea.
-      </p>
-      <p className="mt-2 text-sm text-ivory-faint">
-        Prueba 7 días. Reembolso según el checkout.
+      <p className="mt-3 text-sm text-ivory-faint">
+        Prueba 7 días. Reembolso según el checkout de Hotmart.
       </p>
     </div>
   )

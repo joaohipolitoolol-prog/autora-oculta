@@ -40,13 +40,21 @@ export function HomePage() {
               Quiero ver mi historia ahora
             </CTAButton>
             {hasResult ? (
-              <CTAButton full variant="secondary" onClick={() => navigate('/resultado')}>
+              <button
+                type="button"
+                onClick={() => navigate('/resultado')}
+                className="w-full text-center text-sm text-ivory-faint underline-offset-2 hover:text-gold-soft hover:underline"
+              >
                 Ver mi último resultado
-              </CTAButton>
+              </button>
             ) : hasProgress ? (
-              <CTAButton full variant="secondary" onClick={() => start('home_resume')}>
+              <button
+                type="button"
+                onClick={() => start('home_resume')}
+                className="w-full text-center text-sm text-ivory-faint underline-offset-2 hover:text-gold-soft hover:underline"
+              >
                 Continuar donde lo dejé
-              </CTAButton>
+              </button>
             ) : null}
             <p className="text-sm text-ivory-faint">Gratis. Sin tarjeta. Sin crear cuenta.</p>
           </div>
@@ -66,10 +74,15 @@ export function HomePage() {
 
       <section className="border-t border-white/10 px-5 py-12">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-lg text-ivory-muted">
-            Lectoras buscan poder, peligro, obsesión y romance prohibido. Tú puedes crear esa historia bajo un nombre falso.
+          <p className="text-lg leading-relaxed text-ivory-muted">
+            Miles de lectoras consumen historias sobre poder, peligro, obsesión y romance prohibido.
           </p>
-          <p className="font-display mt-4 text-3xl text-ivory">En 2 minutos ves tu concepto.</p>
+          <p className="font-display mt-4 text-3xl text-ivory md:text-4xl">
+            La pregunta es: ¿qué historia podrías crear tú?
+          </p>
+          <p className="mt-4 text-lg text-ivory-muted">
+            En 2 minutos descubrirás el concepto de tu historia.
+          </p>
           <div className="mx-auto mt-6 max-w-sm">
             <CTAButton full onClick={() => start('home_secondary')}>
               Empezar el test gratis

@@ -39,7 +39,6 @@ export function ResultPage() {
     const onScroll = () => {
       const doc = document.documentElement
       const scrollable = doc.scrollHeight - window.innerHeight
-      // Só aparece depois de ~55% do scroll (depois da capa / premissa)
       const threshold = Math.max(900, scrollable * 0.55)
       setShowSticky(window.scrollY > threshold)
     }
@@ -94,17 +93,17 @@ export function ResultPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-10 pb-28 md:pb-12">
-      {/* BLOCO 1 — Resultado / momento uau */}
+      {/* 1. Capa / título / revelado */}
       <p className="font-accent text-[0.72rem] tracking-[0.18em] text-gold uppercase">
         Tu concepto está listo
       </p>
       <h1 className="font-display mt-2 text-3xl leading-tight text-ivory md:text-4xl">
         {creator
-          ? `${creator}, tu idea ya tiene nombre, conflicto y universo`
-          : 'Tu idea ya tiene nombre, conflicto y universo'}
+          ? `${creator}, tu historia ya tiene una base`
+          : 'Tu historia ya tiene una base'}
       </h1>
       <p className="mt-3 text-lg text-ivory-muted">
-        Esto no es una novela terminada. Es el proyecto inicial que puedes desarrollar.
+        Esto es tu proyecto inicial — no una novela terminada.
       </p>
 
       <div className="mt-8">
@@ -116,60 +115,50 @@ export function ResultPage() {
         />
       </div>
 
-      <section className="mt-10">
-        <h2 className="font-display text-2xl text-ivory md:text-3xl">Premisa</h2>
-        <p className="mt-4 text-lg leading-relaxed text-ivory-muted">{project.premise}</p>
+      <section className="mt-8">
+        <h2 className="font-display text-2xl text-ivory">Premisa</h2>
+        <p className="mt-3 text-lg leading-relaxed text-ivory-muted">{project.premise}</p>
       </section>
 
-      <section className="mt-10">
-        <h2 className="font-display text-2xl text-ivory md:text-3xl">Personajes</h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
-          {[
-            ['Protagonista', project.femaleSummary],
-            ['Interés amoroso', project.maleSummary],
-            ['Conflicto', project.conflictSummary],
-            ['Secreto', project.secretSummary],
-          ].map(([label, body]) => (
-            <article key={label} className="border border-white/10 bg-elevated/80 p-4">
-              <h3 className="font-accent text-[0.7rem] tracking-[0.16em] text-gold uppercase">
-                {label}
-              </h3>
-              <p className="mt-2 text-base leading-relaxed text-ivory-muted">{body}</p>
-            </article>
-          ))}
-        </div>
+      <section className="mt-8 grid gap-3 sm:grid-cols-2">
+        {[
+          ['Protagonista', project.femaleSummary],
+          ['Interés amoroso', project.maleSummary],
+          ['Conflicto', project.conflictSummary],
+          ['Secreto', project.secretSummary],
+        ].map(([label, body]) => (
+          <article key={label} className="border border-white/10 bg-elevated/80 p-4">
+            <h3 className="font-accent text-[0.7rem] tracking-[0.16em] text-gold uppercase">
+              {label}
+            </h3>
+            <p className="mt-2 text-base leading-relaxed text-ivory-muted">{body}</p>
+          </article>
+        ))}
       </section>
 
       <section className="mt-8 rounded-[2px] border border-white/10 bg-elevated p-5">
-        <h2 className="font-display text-2xl text-ivory">Gancho (escena de apertura)</h2>
-        <pre className="font-display mt-4 whitespace-pre-wrap text-xl leading-relaxed text-ivory italic md:text-2xl">
+        <h2 className="font-display text-2xl text-ivory">Gancho</h2>
+        <pre className="font-display mt-3 whitespace-pre-wrap text-xl leading-relaxed text-ivory italic md:text-2xl">
           {project.hook}
         </pre>
       </section>
 
-      {/* Expectativa clara ANTES do primeiro botão pago */}
-      <aside className="mt-8 rounded-[2px] border border-gold/30 bg-wine/15 p-5 text-left">
-        <p className="font-display text-2xl text-ivory">
-          Tu historia no está terminada. Está lista para ser desarrollada.
-        </p>
-        <p className="mt-3 text-base leading-relaxed text-ivory-muted">
-          Autora Oculta no genera una novela completa automáticamente. Al desbloquear, recibirás la
-          estructura, los personajes, los prompts y el método para convertir este concepto en una
-          historia real — y tu proyecto del test queda guardado como punto de partida.
-        </p>
-      </aside>
-
-      {/* BLOCO 2 — Conteúdo bloqueado (documento) */}
-      <div className="mt-8">
-        <LockedContent openChapters={openChapters} ctaId="locked_structure" />
+      {/* 2. O que está bloqueado (prévias sexy) */}
+      <div className="mt-10">
+        <LockedContent
+          openChapters={openChapters}
+          femaleName={project.femaleName}
+          maleName={project.maleName}
+          ctaId="locked_structure"
+        />
       </div>
 
-      {/* BLOCO 2.5 — Prova tangível do método (prompts reais) */}
-      <div className="mt-10">
+      {/* 3. Prompts tangíveis (compacto) */}
+      <div className="mt-8">
         <MethodPreview project={project} />
       </div>
 
-      {/* BLOCO 3 — Oferta cedo */}
+      {/* 4. Preço / oferta */}
       <div className="mt-10">
         <OfferBox
           anchor
@@ -179,114 +168,48 @@ export function ResultPage() {
         />
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row">
-        <CTAButton variant="secondary" className="flex-1" onClick={copyResult}>
+      <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm">
+        <button
+          type="button"
+          onClick={copyResult}
+          className="text-ivory-faint hover:text-gold-soft"
+        >
           {copied ? 'Copiado' : 'Copiar mi resultado'}
-        </CTAButton>
-        <CTAButton
-          variant="ghost"
-          className="flex-1"
+        </button>
+        <button
+          type="button"
           onClick={() => {
             trackEvent('QuizRestarted', { source: 'result' })
             redo()
           }}
+          className="text-ivory-faint hover:text-gold-soft"
         >
           Rehacer el test
-        </CTAButton>
+        </button>
       </div>
 
-      {/* BLOCO 4 — Cómo funciona */}
-      <section className="mt-14 border-t border-white/10 pt-12">
-        <h2 className="font-display text-3xl text-ivory md:text-4xl">Cómo funciona</h2>
-        <p className="mt-3 text-lg text-ivory-muted">
-          El test ya hizo lo difícil: nació tu idea. El pago es la continuación — no otro producto
-          desconectado.
-        </p>
-        <ol className="mt-5 space-y-3 text-lg text-ivory-muted">
-          <li>1. Entras con tu proyecto inicial (el del test).</li>
-          <li>2. Usas las estructuras y prompts del método.</li>
-          <li>3. Desarrollas la historia en ChatGPT, Claude, Gemini u otra IA.</li>
-          <li>4. Preparas publicación y presentación comercial.</li>
-        </ol>
-      </section>
-
-      {/* BLOCO 5 — Qué recibes */}
-      <section className="mt-12">
-        <h2 className="font-display text-3xl text-ivory md:text-4xl">Qué recibirás</h2>
-        <ul className="mt-5 grid gap-2 text-base text-ivory-muted md:grid-cols-2" role="list">
-          {[
-            'Tu proyecto inicial del quiz guardado',
-            'Método Autora Oculta',
-            'Estructura de hasta 25 capítulos',
-            'Perfiles y secretos de personajes',
-            'Prompts para cada etapa',
-            'Sinopsis y descripción de venta',
-            'Guía de publicación',
-            'Plan práctico de 7 días',
-          ].map((item) => (
-            <li key={item} className="border border-white/10 bg-elevated/60 px-3 py-2.5">
-              {item}
-            </li>
-          ))}
-        </ul>
-        <div className="mt-6 grid gap-2 sm:grid-cols-2">
-          {[
-            'Sin experiencia previa',
-            'Sin mostrar tu rostro',
-            'Sin empezar en página en blanco',
-            'Sin novela automática falsa',
-          ].map((t) => (
-            <div key={t} className="border border-gold/20 bg-wine/10 px-3 py-3 text-base text-ivory">
-              {t}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="font-display text-2xl text-ivory md:text-3xl">
-          Prueba Autora Oculta durante 7 días
-        </h2>
-        <p className="mt-3 text-lg text-ivory-muted">
-          Explora el método y comprueba si tiene sentido para tu proyecto. Si decides que no es para
-          ti, puedes solicitar el reembolso según las condiciones del checkout.
-        </p>
-      </section>
-
-      {/* BLOCO 6 — FAQ */}
-      <section className="mt-12">
+      {/* 5. FAQ */}
+      <section className="mt-14 border-t border-white/10 pt-10">
         <h2 className="font-display mb-4 text-3xl text-ivory">Preguntas frecuentes</h2>
         <FAQAccordion />
       </section>
 
-      {/* BLOCO 7 — Oferta repetida */}
+      {/* 6. CTA final */}
       <div className="mt-12">
         <OfferBox
-          title="Desbloquea el método para desarrollar esta historia"
-          subtitle="Recibe la estructura, los personajes, los prompts y el paso a paso para transformar este concepto en un libro digital."
+          title="Tu historia ya tiene una base. Ahora necesitas el método para desarrollarla."
+          subtitle="Desbloquea la estructura, los personajes, los prompts y el plan para convertir este concepto en una historia que puedas desarrollar, publicar y presentar."
           ctaId="offer_final"
           ctaLabel={UNLOCK_CTA}
           storyTitle={project.title}
         />
       </div>
 
-      <section className="mt-14 text-center">
-        <h3 className="font-display text-3xl text-ivory md:text-4xl">
-          Tu identidad puede permanecer oculta.
-          <br />
-          Tu idea no tiene que quedarse guardada.
-        </h3>
-        <div className="mx-auto mt-6 max-w-md">
-          <CTAButton full onClick={() => goToCheckout('final')}>
-            {UNLOCK_CTA}
-          </CTAButton>
-        </div>
-        <p className="mt-6 text-base">
-          <Link to="/" className="text-ivory-faint hover:text-gold-soft">
-            Volver al inicio
-          </Link>
-        </p>
-      </section>
+      <p className="mt-8 text-center text-base">
+        <Link to="/" className="text-ivory-faint hover:text-gold-soft">
+          Volver al inicio
+        </Link>
+      </p>
 
       <StickyUnlockBar visible={showSticky} />
     </div>
