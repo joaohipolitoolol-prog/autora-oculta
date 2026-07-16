@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { StoryCover } from '@/components/StoryCover'
 import { StoryTags } from '@/components/StoryTags'
@@ -6,6 +6,7 @@ import { LockedContent } from '@/components/LockedContent'
 import { OfferBox } from '@/components/OfferBox'
 import { FAQAccordion } from '@/components/FAQAccordion'
 import { CTAButton } from '@/components/CTAButton'
+import { StickyUnlockBar } from '@/components/StickyUnlockBar'
 import { clearQuizProgress, loadProject } from '@/lib/storage'
 import { goToCheckout, trackEvent } from '@/lib/analytics'
 import type { GeneratedProject } from '@/types/quiz'
@@ -15,6 +16,8 @@ export function ResultPage() {
   const navigate = useNavigate()
   const [project, setProject] = useState<GeneratedProject | null>(null)
   const [copied, setCopied] = useState(false)
+  const [showSticky, setShowSticky] = useState(false)
+  const viewedRef = useRef(false)
 
   useEffect(() => {
     const saved = loadProject()
@@ -23,14 +26,27 @@ export function ResultPage() {
       return
     }
     setProject(saved)
-    trackEvent('ResultViewed', { title: saved.title })
+    if (!viewedRef.current) {
+      viewedRef.current = true
+      trackEvent('ResultViewed', { title: saved.title })
+      trackEvent('ViewContent', { content_ids: ['autora-oculta'], title: saved.title })
+    }
   }, [navigate])
+
+  useEffect(() => {
+    const onScroll = () => setShowSticky(window.scrollY > 420)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   if (!project) {
     return (
       <div className="px-5 py-16 text-center text-ivory-muted">Cargando tu proyecto…</div>
     )
   }
+
+  const creator = project.answers.creatorName?.trim()
 
   const copyResult = async () => {
     const text = [
@@ -44,6 +60,7 @@ export function ResultPage() {
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
+      trackEvent('ResultCopied', {})
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
       /* ignore */
@@ -56,9 +73,11 @@ export function ResultPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-10">
+    <div className="mx-auto max-w-3xl px-5 py-10 pb-28 md:pb-10">
       <p className="font-accent text-[0.68rem] tracking-[0.18em] text-gold uppercase">Resultado</p>
-      <h1 className="font-display mt-2 text-4xl text-ivory md:text-5xl">Tu historia oculta ha sido revelada</h1>
+      <h1 className="font-display mt-2 text-4xl text-ivory md:text-5xl">
+        {creator ? `${creator}, tu historia oculta ha sido revelada` : 'Tu historia oculta ha sido revelada'}
+      </h1>
       <p className="mt-3 text-lg text-ivory-muted">
         Basado en tus elecciones, este es el proyecto que podrías comenzar a desarrollar.
       </p>
@@ -67,23 +86,39 @@ export function ResultPage() {
         <StoryCover title={project.title} penName={project.penName} tags={project.tags} />
       </div>
 
-      <section className="mt-10">
+      <section className="mt-8">
         <h2 className="font-display text-2xl text-ivory">Tus elementos</h2>
         <div className="mt-4">
           <StoryTags tags={project.tags} />
         </div>
       </section>
 
-      <section className="mt-10">
+      <section className="mt-8">
         <h2 className="font-display text-2xl text-ivory">Premisa</h2>
         <p className="mt-3 leading-relaxed text-ivory-muted">{project.premise}</p>
       </section>
 
-      <section className="mt-10 rounded-[2px] border border-white/10 bg-elevated p-5">
+      <section className="mt-8 rounded-[2px] border border-white/10 bg-elevated p-5">
         <h2 className="font-display text-2xl text-ivory">Gancho inicial</h2>
         <pre className="font-display mt-4 whitespace-pre-wrap text-xl leading-relaxed text-ivory italic">
           {project.hook}
         </pre>
+      </section>
+
+      {/* CTA temprana — antes de que se canse de leer */}
+      <section className="mt-8 rounded-[2px] border border-gold/35 bg-wine/20 p-5 text-center">
+        <p className="font-display text-2xl text-ivory">Esto es solo el boceto</p>
+        <p className="mt-2 text-ivory-muted">
+          Gratis ves título, gancho y personajes. Al desbloquear recibes: estructura de capítulos, prompts, sinopsis comercial y guía para publicar — sin mostrar tu cara.
+        </p>
+        <div className="mt-5">
+          <CTAButton full onClick={() => goToCheckout('result_early')}>
+            Desbloquear el método · {APP_CONFIG.PRICE_CURRENT}
+          </CTAButton>
+        </div>
+        <p className="mt-2 text-sm text-ivory-faint">
+          Acceso inmediato · 7 días de prueba · Antes <s>{APP_CONFIG.PRICE_REFERENCE}</s>
+        </p>
       </section>
 
       <section className="mt-10">
@@ -120,13 +155,6 @@ export function ResultPage() {
         <p className="mt-3 text-ivory-muted">{project.seriesPotential}</p>
       </section>
 
-      <section className="mt-10 border border-gold/25 bg-wine/15 p-5">
-        <p className="font-display text-2xl text-ivory">Esto es solo el comienzo.</p>
-        <p className="mt-3 text-ivory-muted">
-          La idea existe. Ahora necesita personajes profundos, capítulos, escenas, tensión, identidad, publicación y una estrategia para llegar a lectoras.
-        </p>
-      </section>
-
       <div className="mt-8">
         <LockedContent
           title="Tu proyecto completo todavía está bloqueado"
@@ -156,16 +184,22 @@ export function ResultPage() {
         </CTAButton>
       </div>
 
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+      <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row">
         <CTAButton variant="secondary" className="flex-1" onClick={copyResult}>
           {copied ? 'Copiado' : 'Copiar mi resultado'}
         </CTAButton>
-        <CTAButton variant="ghost" className="flex-1" onClick={redo}>
+        <CTAButton
+          variant="ghost"
+          className="flex-1"
+          onClick={() => {
+            trackEvent('QuizRestarted', { source: 'result' })
+            redo()
+          }}
+        >
           Rehacer el test
         </CTAButton>
       </div>
 
-      {/* OFERTA PERSONALIZADA */}
       <section className="mt-16 border-t border-white/10 pt-12">
         <h2 className="font-display text-4xl text-ivory">
           Tu historia ya comenzó. Ahora descubre cómo convertirla en un proyecto real.
@@ -176,6 +210,10 @@ export function ResultPage() {
         <p className="mt-4 rounded-[2px] border border-gold/25 bg-elevated p-4 text-ivory-muted">
           Autora Oculta no entrega una novela terminada automáticamente. Recibirás un sistema guiado para desarrollar, escribir, revisar, publicar y presentar tu proyecto.
         </p>
+
+        <div className="mt-8">
+          <OfferBox ctaId="offer_mid" anchor />
+        </div>
 
         <h3 className="font-display mt-10 text-2xl text-ivory">Qué recibirás</h3>
         <ul className="mt-4 grid gap-2 text-ivory-muted md:grid-cols-2" role="list">
@@ -237,10 +275,6 @@ export function ResultPage() {
           ))}
         </div>
 
-        <div className="mt-10">
-          <OfferBox />
-        </div>
-
         <section className="mt-12">
           <h3 className="font-display text-2xl text-ivory">Prueba Autora Oculta durante 7 días</h3>
           <p className="mt-3 text-ivory-muted">
@@ -252,6 +286,10 @@ export function ResultPage() {
           <h3 className="font-display mb-4 text-2xl text-ivory">Preguntas frecuentes</h3>
           <FAQAccordion />
         </section>
+
+        <div className="mt-10">
+          <OfferBox title="Comienza hoy tu proyecto como Autora Oculta" ctaId="offer_final" />
+        </div>
 
         <section className="mt-14 text-center">
           <h3 className="font-display text-3xl text-ivory md:text-4xl">
@@ -274,6 +312,8 @@ export function ResultPage() {
           </p>
         </section>
       </section>
+
+      <StickyUnlockBar visible={showSticky} />
     </div>
   )
 }

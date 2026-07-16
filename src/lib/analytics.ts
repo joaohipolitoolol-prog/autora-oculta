@@ -9,18 +9,41 @@ declare global {
   }
 }
 
+/** Eventos estándar de Meta Pixel (usar fbq track) */
+const META_STANDARD = new Set([
+  'PageView',
+  'ViewContent',
+  'Lead',
+  'InitiateCheckout',
+  'Purchase',
+  'AddToCart',
+  'CompleteRegistration',
+  'Search',
+  'Contact',
+])
+
+/** Solo estos eventos llevan value monetario */
+const VALUE_EVENTS = new Set(['InitiateCheckout', 'Purchase', 'ViewContent', 'Lead'])
+
 export function trackEvent(eventName: string, data: Record<string, unknown> = {}) {
-  const payload = {
+  const base: Record<string, unknown> = {
     content_name: 'Autora Oculta',
     content_category: 'digital_product',
-    value: APP_CONFIG.PRICE_VALUE,
-    currency: APP_CONFIG.CURRENCY,
     ...data,
+  }
+
+  if (VALUE_EVENTS.has(eventName)) {
+    if (base.value === undefined) base.value = APP_CONFIG.PRICE_VALUE
+    if (base.currency === undefined) base.currency = APP_CONFIG.CURRENCY
   }
 
   if (typeof window.fbq === 'function') {
     try {
-      window.fbq('track', eventName, payload)
+      if (META_STANDARD.has(eventName)) {
+        window.fbq('track', eventName, base)
+      } else {
+        window.fbq('trackCustom', eventName, base)
+      }
     } catch {
       /* ignore */
     }
@@ -28,14 +51,14 @@ export function trackEvent(eventName: string, data: Record<string, unknown> = {}
 
   if (typeof window.gtag === 'function') {
     try {
-      window.gtag('event', eventName, payload)
+      window.gtag('event', eventName, base)
     } catch {
       /* ignore */
     }
   }
 
   window.dataLayer = window.dataLayer || []
-  window.dataLayer.push({ event: eventName, ...payload })
+  window.dataLayer.push({ event: eventName, ...base })
 }
 
 export function initAnalytics() {
@@ -70,7 +93,6 @@ export function initAnalytics() {
     t.src = 'https://connect.facebook.net/en_US/fbevents.js'
     document.head.appendChild(t)
     window.fbq('init', META_PIXEL_ID)
-    window.fbq('track', 'PageView')
   }
 
   if (GA_MEASUREMENT_ID) {
@@ -83,33 +105,41 @@ export function initAnalytics() {
       window.dataLayer!.push(args)
     }
     window.gtag('js', new Date())
-    window.gtag('config', GA_MEASUREMENT_ID)
+    window.gtag('config', GA_MEASUREMENT_ID, { send_page_view: false })
   }
+}
 
-  trackEvent('PageView')
+export function hasRealCheckout(): boolean {
+  const base = APP_CONFIG.CHECKOUT_URL
+  return Boolean(base && base !== 'CHECKOUT_URL' && /^https?:\/\//i.test(base))
 }
 
 export function buildCheckoutUrl(extra: Record<string, string> = {}): string {
-  const base = APP_CONFIG.CHECKOUT_URL
-  if (!base || base === 'CHECKOUT_URL') return '#oferta'
+  if (!hasRealCheckout()) return '#oferta'
 
   try {
-    const url = new URL(base, window.location.origin)
+    const url = new URL(APP_CONFIG.CHECKOUT_URL, window.location.origin)
     const utm = getUtms()
     Object.entries({ ...utm, ...extra }).forEach(([k, v]) => {
       if (v && !url.searchParams.get(k)) url.searchParams.set(k, v)
     })
     return url.toString()
   } catch {
-    return base
+    return APP_CONFIG.CHECKOUT_URL
   }
 }
 
 export function goToCheckout(cta: string) {
-  trackEvent('InitiateCheckout', { cta_location: cta })
-  trackEvent('UnlockClicked', { cta_location: cta })
   const href = buildCheckoutUrl({ cta })
-  if (href === '#oferta') {
+  const real = href !== '#oferta' && hasRealCheckout()
+
+  // Solo InitiateCheckout cuando hay checkout real (evita IC falsos en ads)
+  if (real) {
+    trackEvent('InitiateCheckout', { cta_location: cta })
+  }
+  trackEvent('UnlockClicked', { cta_location: cta, checkout_ready: real })
+
+  if (!real) {
     document.getElementById('oferta')?.scrollIntoView({ behavior: 'smooth' })
     return
   }

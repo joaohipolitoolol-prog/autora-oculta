@@ -5,7 +5,11 @@ const PROJECT_KEY = 'autora_oculta_generated_project'
 const UTM_KEY = 'autora_oculta_utm'
 
 export function saveAnswers(answers: Partial<QuizAnswers>) {
-  localStorage.setItem(ANSWERS_KEY, JSON.stringify(answers))
+  try {
+    localStorage.setItem(ANSWERS_KEY, JSON.stringify(answers))
+  } catch {
+    /* private mode / quota */
+  }
 }
 
 export function loadAnswers(): Partial<QuizAnswers> | null {
@@ -18,7 +22,11 @@ export function loadAnswers(): Partial<QuizAnswers> | null {
 }
 
 export function saveProject(project: GeneratedProject) {
-  localStorage.setItem(PROJECT_KEY, JSON.stringify(project))
+  try {
+    localStorage.setItem(PROJECT_KEY, JSON.stringify(project))
+  } catch {
+    /* private mode / quota */
+  }
 }
 
 export function loadProject(): GeneratedProject | null {
@@ -31,29 +39,47 @@ export function loadProject(): GeneratedProject | null {
 }
 
 export function clearQuizProgress() {
-  localStorage.removeItem(ANSWERS_KEY)
-  localStorage.removeItem(PROJECT_KEY)
+  try {
+    localStorage.removeItem(ANSWERS_KEY)
+    localStorage.removeItem(PROJECT_KEY)
+  } catch {
+    /* ignore */
+  }
 }
 
 export type UtmData = Record<string, string>
 
 export function captureUtms(): UtmData {
   const params = new URLSearchParams(window.location.search)
-  const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+  const keys = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_content',
+    'utm_term',
+    'fbclid',
+    'gclid',
+  ]
   const out: UtmData = {}
   keys.forEach((k) => {
     const v = params.get(k)
     if (v) out[k] = v
   })
   if (Object.keys(out).length) {
-    sessionStorage.setItem(UTM_KEY, JSON.stringify(out))
+    try {
+      // localStorage sobrevive nueva pestaña; sessionStorage se pierde
+      localStorage.setItem(UTM_KEY, JSON.stringify(out))
+      sessionStorage.setItem(UTM_KEY, JSON.stringify(out))
+    } catch {
+      /* ignore */
+    }
   }
   return out
 }
 
 export function getUtms(): UtmData {
   try {
-    const raw = sessionStorage.getItem(UTM_KEY)
+    const raw = sessionStorage.getItem(UTM_KEY) || localStorage.getItem(UTM_KEY)
     return raw ? (JSON.parse(raw) as UtmData) : {}
   } catch {
     return {}

@@ -22,15 +22,25 @@ export function LockedContent({ title, items, previews = [] }: Props) {
 
       <ul className="mt-4 space-y-3" role="list">
         {items.map((item) => (
-          <li key={item} className="flex items-start gap-3 text-ivory-muted">
-            <span className="mt-1 text-gold" aria-hidden="true">
-              🔒
-            </span>
-            <span className="blur-[0.4px]">{item}</span>
+          <li key={item} className="relative overflow-hidden rounded-[2px] border border-white/5">
+            <div
+              className="select-none px-3 py-2 text-ivory-muted blur-[6px]"
+              aria-hidden="true"
+            >
+              {item}
+            </div>
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-bg/55">
+              <span className="font-accent text-[0.62rem] tracking-[0.14em] text-gold uppercase">
+                Desbloquear
+              </span>
+            </div>
+            <span className="sr-only">{item} — disponible al desbloquear</span>
           </li>
         ))}
       </ul>
-      <p className="mt-4 text-sm text-ivory-faint">Ver estructura completa — disponible al desbloquear.</p>
+      <p className="mt-4 text-sm text-ivory-faint">
+        Estructura completa disponible al desbloquear el método.
+      </p>
     </section>
   )
 }

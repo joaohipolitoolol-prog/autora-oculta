@@ -65,7 +65,24 @@ function buildLockedChapters(a: QuizAnswers, female: string, male: string): stri
   ]
 }
 
+const REQUIRED_KEYS: (keyof QuizAnswers)[] = [
+  'scenario',
+  'male',
+  'relationship',
+  'conflict',
+  'female',
+  'intensity',
+  'ending',
+  'presentation',
+]
+
 export function generateProject(answers: QuizAnswers): GeneratedProject {
+  for (const key of REQUIRED_KEYS) {
+    if (!answers[key]) {
+      throw new Error(`Respuestas incompletas: falta ${key}`)
+    }
+  }
+
   const seedStr = makeSeed([
     answers.scenario,
     answers.male,
@@ -90,6 +107,10 @@ export function generateProject(answers: QuizAnswers): GeneratedProject {
   const relationship = RELATIONSHIP_DATA[answers.relationship]
   const conflict = CONFLICT_DATA[answers.conflict]
 
+  if (!scenario || !male || !female || !relationship || !conflict) {
+    throw new Error('Respuestas inválidas para generar el proyecto')
+  }
+
   const tags = [
     relationship.label,
     conflict.label,
@@ -102,7 +123,7 @@ export function generateProject(answers: QuizAnswers): GeneratedProject {
   const emotionalPromise =
     answers.intensity === 'very_dark' || answers.intensity === 'dark'
       ? 'Peligro para todos. Protección absoluta para ella.'
-      : 'Tensión constante. Deseo contenido. Una verdad que no puede quedarse ocultar.'
+      : 'Tensión constante. Deseo contenido. Una verdad que no puede ocultarse.'
 
   const seriesPotential =
     answers.presentation === 'connected_series' || answers.ending === 'open_series'
