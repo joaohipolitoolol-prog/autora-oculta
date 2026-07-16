@@ -1,8 +1,7 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { APP_CONFIG } from '@/config'
-import type { ReactNode } from 'react'
 
-export function Layout({ children }: { children: ReactNode }) {
+export function Layout() {
   const { pathname } = useLocation()
   const showStartCta = pathname === '/' || pathname === '/terminos' || pathname === '/privacidad'
   const isProcessing = pathname === '/procesando' || pathname === '/processando'
@@ -24,7 +23,7 @@ export function Layout({ children }: { children: ReactNode }) {
             <span className="text-sm text-ivory-faint">Creando…</span>
           ) : showStartCta ? (
             <Link to="/quiz" className="text-sm text-gold-soft no-underline hover:text-ivory">
-              Descubrir mi historia
+              Ver mi historia
             </Link>
           ) : pathname === '/resultado' ? (
             <Link
@@ -39,12 +38,15 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main id="contenido" className="flex-1">
-        {children}
+        <Outlet />
       </main>
       <footer className="border-t border-white/10 px-5 py-10 text-sm text-ivory-faint">
         <div className="mx-auto max-w-5xl space-y-4">
           <p className="font-display text-xl text-ivory">Autora Oculta</p>
-          <p>Producto digital educativo</p>
+          <p className="text-ivory-muted">
+            Crea historias digitales bajo un seudónimo usando IA.
+          </p>
+          <p>Producto digital educativo · Un solo pago · Sin mensualidades</p>
           <nav className="flex flex-wrap gap-4" aria-label="Enlaces legales">
             <Link to="/terminos" className="text-ivory-muted no-underline hover:text-gold-soft">
               Términos de uso

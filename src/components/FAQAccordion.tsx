@@ -1,37 +1,34 @@
 import { useState } from 'react'
 
+/** FAQ in customer language — mechanism proof, no fake testimonials */
 const FAQ = [
   {
-    q: '¿Recibiré un libro completo automáticamente?',
-    a: 'No. Recibirás un proyecto inicial personalizado (como el del test) y un método guiado: estructuras, prompts y un plan para desarrollar tu historia con ChatGPT u otra IA. Tú escribes con guía — no recibes una novela terminada al instante.',
+    q: '¿Voy a recibir el libro listo?',
+    a: 'No. Recibes el proyecto del test (título, seudónimo, premisa) y el método para desarrollarlo: estructura de hasta 25 capítulos, más de 40 prompts y un plan de 7 días. Tú escribes con guía en ChatGPT, Claude o Gemini — no es una novela automática completa.',
   },
   {
-    q: '¿El método usa mi resultado del test?',
-    a: 'Sí. El punto de partida es tu concepto: título, seudónimo, premisa, personajes y conflicto. Los prompts del método se diseñaron para expandir ese tipo de proyecto, no para empezar de cero.',
+    q: '¿Y si no sé por dónde empezar?',
+    a: 'Por eso existe el método. El test te da el concepto; adentro tienes la siguiente acción clara: personajes, capítulos, prompts y publicación, en ese orden.',
   },
   {
-    q: '¿Necesito saber escribir?',
-    a: 'No. El método organiza ideas, personajes, capítulos y escenas. Pegarás prompts en una IA y editarás el resultado paso a paso.',
+    q: '¿La historia no va a quedar genérica?',
+    a: 'El punto de partida es tu combinación personalizada de universo, conflicto y personajes. Los prompts están pensados para expandir ese proyecto, no para generar un texto genérico sin contexto.',
   },
   {
-    q: '¿Tengo que mostrar mi rostro?',
-    a: 'No. Puedes publicar bajo seudónimo y mantener el proyecto separado de tu identidad personal.',
+    q: '¿Alguien sabrá que fui yo?',
+    a: 'No hace falta. Publicas bajo seudónimo. Tu identidad puede permanecer oculta; tu historia no necesita quedarse guardada.',
   },
   {
-    q: '¿Tengo que escribir contenido explícito?',
-    a: 'No. Tú defines el nivel de intensidad. El método se adapta a misterio, tensión o dark más fuerte.',
+    q: '¿Necesito saber escribir o usar IA?',
+    a: 'No. Pegarás prompts en ChatGPT, Claude o Gemini y editarás paso a paso. Funciona desde el celular.',
   },
   {
-    q: '¿Qué herramienta de IA necesito?',
-    a: 'ChatGPT, Claude, Gemini u otra capaz de trabajar con texto. Funciona desde el celular con la app o el navegador.',
+    q: '¿Es un pago único o una suscripción?',
+    a: 'Un solo pago. Sin mensualidades. Acceso inmediato al método. Garantía de 7 días según Hotmart.',
   },
   {
-    q: '¿Puedo usarlo desde el celular?',
-    a: 'Sí. El material es digital y los prompts se usan en la app de ChatGPT (u otra IA) desde el teléfono. No necesitas computadora para empezar.',
-  },
-  {
-    q: '¿Dónde puedo publicar?',
-    a: 'El método muestra opciones de venta directa, marketplaces y series. Tú eliges según tu mercado.',
+    q: '¿Qué pasa con mi resultado del test después de comprar?',
+    a: 'Si usas el mismo navegador, el proyecto se importa a tu área del método. Título, seudónimo y premisa aparecen como base de trabajo — no empiezas de cero.',
   },
 ]
 

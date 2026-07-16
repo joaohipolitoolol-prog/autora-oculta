@@ -14,7 +14,7 @@ type Props = {
   ctaId?: string
 }
 
-/** Prévia sexy do bloqueado: capítulos + personajes + prompts */
+/** Prévia de 3 capítulos + resto bloqueado. Preço logo em seguida (OfferBox). */
 export function LockedContent({
   openChapters,
   femaleName = 'la protagonista',
@@ -24,16 +24,18 @@ export function LockedContent({
   return (
     <section className="rounded-[2px] border border-gold/30 bg-elevated/90 p-5 md:p-7">
       <p className="font-accent text-[0.68rem] tracking-[0.18em] text-gold uppercase">
-        Todavía bloqueado
+        Vista previa del método
       </p>
       <h3 className="font-display mt-2 text-3xl text-ivory md:text-4xl">
-        Tu historia ya empezó. El resto espera adentro.
+        Tres capítulos revelados. El resto espera adentro.
       </h3>
+      <p className="mt-3 text-base text-ivory-muted">
+        Esto es la dirección de tu proyecto — no el libro terminado.
+      </p>
 
-      {/* Capítulos */}
       <div className="mt-8">
         <h4 className="font-accent text-[0.68rem] tracking-[0.16em] text-gold uppercase">
-          Estructura bloqueada
+          Estructura (vista previa)
         </h4>
         <div className="mt-3 space-y-3">
           {openChapters.map((ch) => (
@@ -58,44 +60,16 @@ export function LockedContent({
         </div>
       </div>
 
-      {/* Personajes */}
       <div className="mt-8">
         <h4 className="font-accent text-[0.68rem] tracking-[0.16em] text-gold uppercase">
-          Personajes bloqueados
-        </h4>
-        <ul className="mt-3 space-y-2" role="list">
-          {[
-            `Herida principal de ${femaleName}`,
-            `Motivación secreta de ${maleName}`,
-            'Punto de ruptura entre ambos',
-            'Secreto que aún no se revela en la premisa',
-          ].map((item) => (
-            <li
-              key={item}
-              className="relative overflow-hidden border border-white/10 px-3 py-2.5 text-left"
-            >
-              <span className="blur-[4px] select-none text-ivory-muted" aria-hidden="true">
-                {item}
-              </span>
-              <span className="pointer-events-none absolute inset-0 flex items-center px-3 bg-bg/55 text-sm text-gold-soft">
-                {item}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Prompts */}
-      <div className="mt-8">
-        <h4 className="font-accent text-[0.68rem] tracking-[0.16em] text-gold uppercase">
-          Prompts bloqueados
+          También bloqueado
         </h4>
         <ul className="mt-3 grid gap-2 sm:grid-cols-2" role="list">
           {[
-            'Prompt para expandir la premisa',
-            'Prompt para construir capítulos',
-            'Prompt para diálogos tensos',
-            'Prompt para sinopsis comercial',
+            'Fichas profundas de personajes',
+            'Más de 40 prompts conectados',
+            'Plan de publicación',
+            'Guía de sinopsis comercial',
           ].map((item) => (
             <li
               key={item}
@@ -109,7 +83,7 @@ export function LockedContent({
 
       <div className="mt-6">
         <CTAButton full onClick={() => goToCheckout(ctaId)}>
-          Desbloquear mi proyecto por {APP_CONFIG.PRICE_CURRENT}
+          DESBLOQUEAR MI PROYECTO POR {APP_CONFIG.PRICE_CURRENT}
         </CTAButton>
       </div>
     </section>

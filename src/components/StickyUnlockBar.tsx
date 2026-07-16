@@ -21,7 +21,7 @@ export function StickyUnlockBar({ visible, ctaId = 'sticky_result' }: Props) {
         className="flex min-h-14 w-full items-center justify-center gap-2 rounded-[2px] border border-gold/35 bg-gradient-to-br from-[#8a2a42] via-wine to-[#3d1020] px-4 text-center text-ivory"
       >
         <span className="text-[0.8rem] font-bold uppercase tracking-[0.05em]">
-          Desbloquear mi proyecto por {APP_CONFIG.PRICE_CURRENT}
+          DESBLOQUEAR MI PROYECTO POR {APP_CONFIG.PRICE_CURRENT}
         </span>
       </button>
     </div>

@@ -16,7 +16,7 @@ export function StoryCover({ title, penName, tags, impactLine }: Props) {
         }}
       />
       <p className="font-accent relative text-[0.68rem] tracking-[0.22em] text-gold uppercase">
-        Tu proyecto inicial
+        Concepto listo para desarrollar
       </p>
       <h2 className="font-display relative mt-5 text-4xl leading-[1.1] text-balance text-ivory italic md:text-5xl lg:text-6xl">
         {title}

@@ -2,21 +2,22 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { StoryCover } from '@/components/StoryCover'
 import { LockedContent } from '@/components/LockedContent'
-import { MethodPreview } from '@/components/MethodPreview'
 import { OfferBox } from '@/components/OfferBox'
 import { FAQAccordion } from '@/components/FAQAccordion'
 import { StickyUnlockBar } from '@/components/StickyUnlockBar'
 import { clearQuizProgress, loadProject } from '@/lib/storage'
 import { trackEvent } from '@/lib/analytics'
+import { downloadShareCover, shareWhatsAppCoverText } from '@/lib/shareCover'
 import type { GeneratedProject } from '@/types/quiz'
 import { APP_CONFIG } from '@/config'
 
-const UNLOCK_CTA = `Desbloquear mi proyecto por ${APP_CONFIG.PRICE_CURRENT}`
+const UNLOCK_CTA = `DESBLOQUEAR MI PROYECTO POR ${APP_CONFIG.PRICE_CURRENT}`
 
 export function ResultPage() {
   const navigate = useNavigate()
   const [project, setProject] = useState<GeneratedProject | null>(null)
   const [copied, setCopied] = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const [showSticky, setShowSticky] = useState(false)
   const viewedRef = useRef(false)
 
@@ -36,18 +37,12 @@ export function ResultPage() {
 
   useEffect(() => {
     const onScroll = () => {
-      const doc = document.documentElement
-      const scrollable = doc.scrollHeight - window.innerHeight
-      const threshold = Math.max(900, scrollable * 0.55)
-      setShowSticky(window.scrollY > threshold)
+      // Sticky after paywall / early offer area
+      setShowSticky(window.scrollY > 700)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   if (!project) {
@@ -66,22 +61,38 @@ export function ResultPage() {
     )
     .slice(0, 3)
 
-  const copyResult = async () => {
+  const copyShareText = async () => {
     const text = [
-      `Título: ${project.title}`,
-      `Autora sugerida: ${project.penName}`,
-      `Premisa: ${project.premise}`,
-      `Promesa emocional: ${project.emotionalPromise}`,
+      `«${project.title}»`,
+      `Por ${project.penName}`,
+      impactLine ? `"${impactLine}"` : '',
       '',
-      'Generado con Autora Oculta',
-    ].join('\n')
+      'Descubre qué dark romance escribirías si nadie supiera que fuiste tú:',
+      'https://autora-oculta.vercel.app/',
+    ]
+      .filter(Boolean)
+      .join('\n')
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
-      trackEvent('ResultCopied', {})
+      trackEvent('ResultCopied', { mode: 'share_cover' })
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
       /* ignore */
+    }
+  }
+
+  const downloadCover = async () => {
+    setDownloading(true)
+    try {
+      const ok = await downloadShareCover({
+        title: project.title,
+        penName: project.penName,
+        impactLine,
+      })
+      if (ok) trackEvent('CoverDownloaded', {})
+    } finally {
+      setDownloading(false)
     }
   }
 
@@ -92,17 +103,17 @@ export function ResultPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-10 pb-28 md:pb-12">
-      {/* 1. Capa / título / revelado */}
+      {/* Expectation correction */}
       <p className="font-accent text-[0.72rem] tracking-[0.18em] text-gold uppercase">
-        Tu concepto está listo
+        Tu proyecto está listo para ser desarrollado
       </p>
       <h1 className="font-display mt-2 text-3xl leading-tight text-ivory md:text-4xl">
         {creator
-          ? `${creator}, tu historia ya tiene una base`
-          : 'Tu historia ya tiene una base'}
+          ? `${creator}, este es el concepto de tu historia`
+          : 'Este es el concepto de tu historia'}
       </h1>
       <p className="mt-3 text-lg text-ivory-muted">
-        Esto es tu proyecto inicial — no una novela terminada.
+        Título, seudónimo, premisa y gancho — la base para desarrollar. No es una novela completa.
       </p>
 
       <div className="mt-8">
@@ -113,6 +124,44 @@ export function ResultPage() {
           impactLine={impactLine}
         />
       </div>
+
+      {/* Shareable cover — distribution */}
+      <section className="mt-5 border border-white/10 bg-elevated/60 p-4">
+        <p className="text-center text-sm text-ivory-muted">
+          Comparte solo la portada de tu historia, sin revelar tus respuestas.
+        </p>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:justify-center">
+          <button
+            type="button"
+            onClick={copyShareText}
+            className="min-h-11 border border-white/15 px-4 text-sm text-ivory hover:border-gold/40"
+          >
+            {copied ? 'Copiado' : 'Copiar resultado'}
+          </button>
+          <button
+            type="button"
+            onClick={downloadCover}
+            disabled={downloading}
+            className="min-h-11 border border-white/15 px-4 text-sm text-ivory hover:border-gold/40 disabled:opacity-60"
+          >
+            {downloading ? 'Generando…' : 'Descargar portada'}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              trackEvent('ResultSharedWhatsApp', {})
+              shareWhatsAppCoverText({
+                title: project.title,
+                penName: project.penName,
+                impactLine,
+              })
+            }}
+            className="min-h-11 border border-gold/35 bg-wine/20 px-4 text-sm text-ivory hover:border-gold/55"
+          >
+            Compartir en WhatsApp
+          </button>
+        </div>
+      </section>
 
       <section className="mt-8">
         <h2 className="font-display text-2xl text-ivory">Premisa</h2>
@@ -142,7 +191,7 @@ export function ResultPage() {
         </pre>
       </section>
 
-      {/* 2. O que está bloqueado (prévias sexy) */}
+      {/* Paywall early — 3 chapters then price */}
       <div className="mt-10">
         <LockedContent
           openChapters={openChapters}
@@ -152,29 +201,40 @@ export function ResultPage() {
         />
       </div>
 
-      {/* 3. Prompts tangíveis (compacto) */}
+      {/* Price immediately after locked preview */}
       <div className="mt-8">
-        <MethodPreview project={project} />
-      </div>
-
-      {/* 4. Preço / oferta */}
-      <div className="mt-10">
         <OfferBox
           anchor
+          compact
           ctaId="offer_early"
           ctaLabel={UNLOCK_CTA}
           storyTitle={project.title}
+          title={`Desbloquea tu proyecto por ${APP_CONFIG.PRICE_CURRENT}`}
+          subtitle="Un solo pago. Acceso inmediato. Garantía de 7 días. Estructura de hasta 25 capítulos, más de 40 prompts y plan de 7 días."
         />
       </div>
 
+      {/* Method 4 steps — short */}
+      <section className="mt-12 border-t border-white/10 pt-10">
+        <p className="font-accent text-center text-[0.68rem] tracking-[0.18em] text-gold uppercase">
+          Método Autora Oculta
+        </p>
+        <h2 className="font-display mt-2 text-center text-3xl text-ivory">
+          Descubrir → Estructurar → Desarrollar → Publicar
+        </h2>
+        <p className="mx-auto mt-3 max-w-xl text-center text-base text-ivory-muted">
+          Empiezas con esta combinación personalizada. Luego usas estructuras y prompts para
+          transformarla en una historia publicable — bajo seudónimo.
+        </p>
+        <ul className="mx-auto mt-6 max-w-md space-y-2 text-base text-ivory-muted" role="list">
+          <li>· 8 preguntas · menos de 2 minutos</li>
+          <li>· Estructura de hasta 25 capítulos</li>
+          <li>· Más de 40 prompts organizados</li>
+          <li>· Plan de ejecución en 7 días</li>
+        </ul>
+      </section>
+
       <div className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm">
-        <button
-          type="button"
-          onClick={copyResult}
-          className="text-ivory-faint hover:text-gold-soft"
-        >
-          {copied ? 'Copiado' : 'Copiar mi resultado'}
-        </button>
         <button
           type="button"
           onClick={() => {
@@ -186,18 +246,20 @@ export function ResultPage() {
           Rehacer el test
         </button>
       </div>
+      <p className="mt-3 text-center text-xs text-ivory-faint">
+        Tras la compra, abre tu área del método. Si usas el mismo navegador, importamos este proyecto
+        automáticamente.
+      </p>
 
-      {/* 5. FAQ */}
       <section className="mt-14 border-t border-white/10 pt-10">
         <h2 className="font-display mb-4 text-3xl text-ivory">Preguntas frecuentes</h2>
         <FAQAccordion />
       </section>
 
-      {/* 6. CTA final */}
       <div className="mt-12">
         <OfferBox
-          title="Tu historia ya tiene una base. Ahora necesitas el método para desarrollarla."
-          subtitle="Desbloquea la estructura, los personajes, los prompts y el plan para convertir este concepto en una historia que puedas desarrollar, publicar y presentar."
+          title="Tu proyecto está listo para ser desarrollado."
+          subtitle="Desbloquea el método: estructura, prompts y plan de publicación. Tu identidad puede permanecer oculta. Tu historia no necesita quedarse guardada."
           ctaId="offer_final"
           ctaLabel={UNLOCK_CTA}
           storyTitle={project.title}

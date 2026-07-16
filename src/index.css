@@ -129,3 +129,14 @@
     transform: translateY(0);
   }
 }
+
+.member-shell {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.member-shell input,
+.member-shell textarea,
+.member-shell select,
+.member-shell button {
+  touch-action: manipulation;
+}

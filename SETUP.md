@@ -79,11 +79,13 @@ O conectar el repo a Vercel (SPA con rewrite a `index.html`).
 
 ## 9. Entregável do produto (pós-compra)
 
-Área do método (HTML):
+Área do método (webapp PWA completa):
 
-- Pasta: `public/entregavel/`
+- Código: `src/member/`
 - URL: `https://autora-oculta.vercel.app/entregavel/`
 - Guia Hotmart: `ENTREGA-HOTMART.md`
+
+Inclui: sidebar, painel de progresso, projeto, universo, tracker de 25 capítulos, fichas, biblioteca de prompts, caderno, plan 7 dias, checklist de publicação e instalação PWA.
 
 Cole esse link como conteúdo do produto na Hotmart.
 
