@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Términos de uso | Autora Oculta</title>
+  <meta name="description" content="Términos de uso del producto digital Autora Oculta." />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&family=Cinzel:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="legal-page">
+    <div class="container">
+      <a class="back" href="index.html">← Volver a Autora Oculta</a>
+      <div class="legal-content">
+        <h1>Términos de uso</h1>
+        <p class="micro">Última actualización: julio 2026</p>
+
+        <h2>1. Producto</h2>
+        <p>Autora Oculta es un producto digital educativo. Al completar la compra, recibes acceso a contenidos digitales según las condiciones informadas en el checkout.</p>
+
+        <h2>2. Acceso</h2>
+        <p>El acceso se otorga de forma personal e intransferible. Queda prohibida la redistribución, reventa o compartición pública del material sin autorización.</p>
+
+        <h2>3. Naturaleza del contenido</h2>
+        <p>El producto ofrece herramientas, estructuras y orientación para la creación de proyectos narrativos digitales. No garantiza ingresos, ventas, visibilidad o resultados financieros.</p>
+
+        <h2>4. Responsabilidad creativa</h2>
+        <p>La usuaria es responsable de las decisiones creativas, la revisión de sus textos, el cumplimiento de las reglas de las plataformas donde publique y del uso ético de herramientas de inteligencia artificial.</p>
+
+        <h2>5. Pagos y reembolsos</h2>
+        <p>Los pagos se procesan mediante la plataforma de checkout configurada. Las políticas de reembolso aplican según las condiciones mostradas al momento de la compra, incluyendo cualquier garantía de prueba vigente.</p>
+
+        <h2>6. Contacto</h2>
+        <p>Para consultas relacionadas con estos términos, escribe a <a class="js-contact" href="mailto:hola@autoraoculta.com">hola@autoraoculta.com</a>.</p>
+      </div>
+    </div>
+  </main>
+  <script src="js/config.js"></script>
+  <script>
+    (function () {
+      var cfg = window.AUTORA_OCULTA || {};
+      var email = cfg.CONTACT_EMAIL || "hola@autoraoculta.com";
+      document.querySelectorAll(".js-contact").forEach(function (el) {
+        el.setAttribute("href", "mailto:" + email);
+        el.textContent = email;
+      });
+    })();
+  </script>
+</body>
+</html>

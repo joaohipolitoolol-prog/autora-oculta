@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de privacidad | Autora Oculta</title>
+  <meta name="description" content="Política de privacidad del producto digital Autora Oculta." />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&family=Cinzel:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="legal-page">
+    <div class="container">
+      <a class="back" href="index.html">← Volver a Autora Oculta</a>
+      <div class="legal-content">
+        <h1>Política de privacidad</h1>
+        <p class="micro">Última actualización: julio 2026</p>
+
+        <h2>1. Información que podemos recopilar</h2>
+        <p>Datos de contacto y compra procesados por la plataforma de pago, así como datos de navegación (páginas visitadas, clics y parámetros UTM) cuando se utilizan herramientas de análisis o publicidad.</p>
+
+        <h2>2. Uso de la información</h2>
+        <p>Utilizamos la información para entregar el acceso al producto, brindar soporte, mejorar la experiencia de la página y medir el rendimiento de campañas, cuando corresponda.</p>
+
+        <h2>3. Cookies y medición</h2>
+        <p>La landing puede utilizar cookies o píxeles de terceros (por ejemplo, Meta Pixel o Google Analytics) si están configurados en <code>js/config.js</code>. Puedes gestionar cookies desde la configuración de tu navegador.</p>
+
+        <h2>4. Compartición con terceros</h2>
+        <p>Los datos de pago son procesados por la plataforma de checkout. No vendemos datos personales. Podemos compartir información con proveedores que ayudan a operar el producto, solo en la medida necesaria.</p>
+
+        <h2>5. Conservación y seguridad</h2>
+        <p>Conservamos la información el tiempo necesario para cumplir con las finalidades descritas y con obligaciones legales. Aplicamos medidas razonables de protección, sin poder garantizar seguridad absoluta en internet.</p>
+
+        <h2>6. Tus derechos</h2>
+        <p>Puedes solicitar acceso, actualización o eliminación de tus datos de contacto escribiendo a <a class="js-contact" href="mailto:hola@autoraoculta.com">hola@autoraoculta.com</a>, sujeto a las limitaciones legales aplicables.</p>
+
+        <h2>7. Contacto</h2>
+        <p>Para preguntas sobre privacidad: <a class="js-contact" href="mailto:hola@autoraoculta.com">hola@autoraoculta.com</a>.</p>
+      </div>
+    </div>
+  </main>
+  <script src="js/config.js"></script>
+  <script>
+    (function () {
+      var cfg = window.AUTORA_OCULTA || {};
+      var email = cfg.CONTACT_EMAIL || "hola@autoraoculta.com";
+      document.querySelectorAll(".js-contact").forEach(function (el) {
+        el.setAttribute("href", "mailto:" + email);
+        el.textContent = email;
+      });
+    })();
+  </script>
+</body>
+</html>

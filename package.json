@@ -1,0 +1,13 @@
+{
+  "name": "autora-oculta-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page de Autora Oculta",
+  "scripts": {
+    "start": "npx --yes serve . -p 4173",
+    "optimize:images": "node scripts/optimize-images.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  }
+}
