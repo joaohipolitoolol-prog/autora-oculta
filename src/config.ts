@@ -8,7 +8,7 @@ export const APP_CONFIG = {
   PRICE_VALUE: 7.49,
   CURRENCY: 'USD',
   CONTACT_EMAIL: 'hola@autoraoculta.com',
-  META_PIXEL_ID: '',
+  META_PIXEL_ID: '1667473561183604',
   GA_MEASUREMENT_ID: '',
   GTM_ID: '',
 } as const
