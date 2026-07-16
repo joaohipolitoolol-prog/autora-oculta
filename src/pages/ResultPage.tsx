@@ -35,10 +35,20 @@ export function ResultPage() {
   }, [navigate])
 
   useEffect(() => {
-    const onScroll = () => setShowSticky(window.scrollY > 380)
+    const onScroll = () => {
+      const doc = document.documentElement
+      const scrollable = doc.scrollHeight - window.innerHeight
+      // Só aparece depois de ~55% do scroll (depois da capa / premissa)
+      const threshold = Math.max(900, scrollable * 0.55)
+      setShowSticky(window.scrollY > threshold)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
   if (!project) {

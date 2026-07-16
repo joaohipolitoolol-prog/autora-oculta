@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { QUESTIONS } from '@/data/questions'
 import { ProgressBar } from '@/components/ProgressBar'
@@ -16,7 +16,6 @@ function parsePaso(raw: string | null, total: number): number | null {
   if (raw == null || raw === '') return null
   const n = Number.parseInt(raw, 10)
   if (!Number.isFinite(n) || n < 1) return null
-  // 1..total = preguntas; total+1 = captura
   return Math.min(n - 1, total)
 }
 
@@ -27,10 +26,8 @@ export function QuizPage() {
   const [step, setStep] = useState(() => parsePaso(searchParams.get('paso'), QUESTIONS.length) ?? 0)
   const [answers, setAnswers] = useState<Partial<QuizAnswers>>({})
   const [creatorName, setCreatorName] = useState('')
-  const [advancing, setAdvancing] = useState(false)
   const [hydrated, setHydrated] = useState(false)
   const startedRef = useRef(false)
-  const advanceTimer = useRef<number | null>(null)
   const skipUrlSync = useRef(false)
 
   const total = QUESTIONS.length
@@ -41,7 +38,6 @@ export function QuizPage() {
   const progressTotal = total + 1
   const progressLabel = isCapture ? 'Último paso' : undefined
 
-  // Hidrata respuestas + resume si no hay ?paso=
   useEffect(() => {
     if (!startedRef.current) {
       startedRef.current = true
@@ -65,9 +61,7 @@ export function QuizPage() {
       next.set('paso', '1')
       setSearchParams(next, { replace: true })
       setHydrated(true)
-      return () => {
-        if (advanceTimer.current) window.clearTimeout(advanceTimer.current)
-      }
+      return
     }
 
     if (saved) {
@@ -85,14 +79,9 @@ export function QuizPage() {
     }
 
     setHydrated(true)
-    return () => {
-      if (advanceTimer.current) window.clearTimeout(advanceTimer.current)
-    }
-    // solo al montar
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Sync step → URL (browser back funciona)
   useEffect(() => {
     if (!hydrated) return
     if (skipUrlSync.current) {
@@ -106,15 +95,12 @@ export function QuizPage() {
     setSearchParams(next, { replace: false })
   }, [step, hydrated, searchParams, setSearchParams])
 
-  // URL → step (back/forward)
   useEffect(() => {
     if (!hydrated) return
     const fromUrl = parsePaso(searchParams.get('paso'), total)
     if (fromUrl == null) return
     if (fromUrl !== step) {
       skipUrlSync.current = true
-      setAdvancing(false)
-      if (advanceTimer.current) window.clearTimeout(advanceTimer.current)
       setStep(fromUrl)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,19 +117,8 @@ export function QuizPage() {
     return Boolean(selected)
   }, [isCapture, selected])
 
-  const goNextStep = useCallback(() => {
-    setAdvancing(false)
-    if (step < total - 1) {
-      setStep((s) => s + 1)
-      return
-    }
-    if (step === total - 1) {
-      setStep(total)
-    }
-  }, [step, total])
-
   const selectOption = (id: string) => {
-    if (!question || advancing) return
+    if (!question) return
     const next = { ...answers, [question.id]: id }
     setAnswers(next)
     saveAnswers(next)
@@ -153,12 +128,6 @@ export function QuizPage() {
       step: step + 1,
       total,
     })
-
-    setAdvancing(true)
-    if (advanceTimer.current) window.clearTimeout(advanceTimer.current)
-    advanceTimer.current = window.setTimeout(() => {
-      goNextStep()
-    }, 280)
   }
 
   const finishQuiz = (opts?: { clearOptional?: boolean }) => {
@@ -180,7 +149,7 @@ export function QuizPage() {
   }
 
   const next = () => {
-    if (!canContinue || advancing) return
+    if (!canContinue) return
     if (step < total - 1) {
       setStep((s) => s + 1)
       return
@@ -193,8 +162,6 @@ export function QuizPage() {
   }
 
   const back = () => {
-    if (advanceTimer.current) window.clearTimeout(advanceTimer.current)
-    setAdvancing(false)
     if (step === 0) {
       navigate('/')
       return
@@ -206,11 +173,7 @@ export function QuizPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-8 pb-32">
-      <ProgressBar
-        current={progressCurrent}
-        total={progressTotal}
-        label={progressLabel}
-      />
+      <ProgressBar current={progressCurrent} total={progressTotal} label={progressLabel} />
 
       {!isCapture && question && (
         <div className="mt-8">
@@ -228,16 +191,14 @@ export function QuizPage() {
             ))}
           </div>
           <p className="mt-4 text-center text-sm text-ivory-faint">
-            Toca una opción para continuar
+            Elige una opción y toca Continuar
           </p>
         </div>
       )}
 
       {isCapture && (
         <div className="mt-8">
-          <h1 className="font-display text-3xl text-ivory md:text-4xl">
-            Tu concepto está listo
-          </h1>
+          <h1 className="font-display text-3xl text-ivory md:text-4xl">Tu concepto está listo</h1>
           <p className="mt-3 text-lg text-ivory-muted">
             Opcional: deja tu nombre para personalizar el saludo. Puedes continuar sin llenar nada.
           </p>
@@ -278,7 +239,7 @@ export function QuizPage() {
             <CTAButton variant="secondary" onClick={back} className="flex-1">
               Atrás
             </CTAButton>
-            <CTAButton onClick={next} disabled={!canContinue || advancing} className="flex-[1.4]">
+            <CTAButton onClick={next} disabled={!canContinue} className="flex-[1.4]">
               Continuar
             </CTAButton>
           </div>
