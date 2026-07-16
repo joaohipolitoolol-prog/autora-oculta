@@ -3,35 +3,35 @@ import { useState } from 'react'
 const FAQ = [
   {
     q: '¿Recibiré un libro completo automáticamente?',
-    a: 'No. Recibirás un proyecto inicial personalizado y un método guiado para desarrollar tu historia usando estructuras, prompts y herramientas de inteligencia artificial.',
+    a: 'No. Recibirás un proyecto inicial personalizado (como el del test) y un método guiado: estructuras, prompts y un plan para desarrollar tu historia con ChatGPT u otra IA. Tú escribes con guía — no recibes una novela terminada al instante.',
+  },
+  {
+    q: '¿El método usa mi resultado del test?',
+    a: 'Sí. El punto de partida es tu concepto: título, seudónimo, premisa, personajes y conflicto. Los prompts del método se diseñaron para expandir ese tipo de proyecto, no para empezar de cero.',
   },
   {
     q: '¿Necesito saber escribir?',
-    a: 'No. El método fue creado para ayudarte a organizar ideas, personajes, capítulos y escenas desde cero.',
+    a: 'No. El método organiza ideas, personajes, capítulos y escenas. Pegarás prompts en una IA y editarás el resultado paso a paso.',
   },
   {
     q: '¿Tengo que mostrar mi rostro?',
-    a: 'No. Puedes trabajar bajo un seudónimo y mantener el proyecto separado de tu identidad personal.',
+    a: 'No. Puedes publicar bajo seudónimo y mantener el proyecto separado de tu identidad personal.',
   },
   {
     q: '¿Tengo que escribir contenido explícito?',
-    a: 'No. Puedes definir el nivel de intensidad de tu historia.',
+    a: 'No. Tú defines el nivel de intensidad. El método se adapta a misterio, tensión o dark más fuerte.',
   },
   {
-    q: '¿Qué herramienta de inteligencia artificial necesito?',
-    a: 'Puedes utilizar ChatGPT, Claude, Gemini u otra herramienta capaz de trabajar con texto.',
-  },
-  {
-    q: '¿Autora Oculta escribe el libro dentro de la plataforma?',
-    a: 'En esta versión, Autora Oculta entrega estructuras, prompts, ejemplos y un camino guiado. El desarrollo del texto se realiza utilizando la herramienta de inteligencia artificial elegida por la usuaria.',
+    q: '¿Qué herramienta de IA necesito?',
+    a: 'ChatGPT, Claude, Gemini u otra capaz de trabajar con texto. Funciona desde el celular con la app o el navegador.',
   },
   {
     q: '¿Puedo usarlo desde el celular?',
-    a: 'Sí.',
+    a: 'Sí. El material es digital y los prompts se usan en la app de ChatGPT (u otra IA) desde el teléfono. No necesitas computadora para empezar.',
   },
   {
     q: '¿Dónde puedo publicar?',
-    a: 'El método presenta diferentes posibilidades de publicación y venta digital.',
+    a: 'El método muestra opciones de venta directa, marketplaces y series. Tú eliges según tu mercado.',
   },
 ]
 
@@ -55,7 +55,7 @@ export function FAQAccordion() {
                 {isOpen ? '−' : '+'}
               </span>
             </button>
-            {isOpen && <p className="pb-4 text-ivory-muted">{item.a}</p>}
+            {isOpen && <p className="pb-4 text-base leading-relaxed text-ivory-muted">{item.a}</p>}
           </div>
         )
       })}

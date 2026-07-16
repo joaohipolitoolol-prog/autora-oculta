@@ -7,6 +7,7 @@ type Props = {
   subtitle?: string
   ctaLabel?: string
   ctaId?: string
+  storyTitle?: string
   /** Solo el primer OfferBox de la página debe anclar #oferta */
   anchor?: boolean
 }
@@ -16,6 +17,7 @@ export function OfferBox({
   subtitle = 'Desbloquea la estructura de capítulos, los perfiles de personajes, los prompts y el plan de publicación para desarrollar tu proyecto paso a paso.',
   ctaLabel,
   ctaId = 'offer',
+  storyTitle,
   anchor = false,
 }: Props) {
   const label = ctaLabel ?? `Desbloquear mi proyecto por ${APP_CONFIG.PRICE_CURRENT}`
@@ -28,14 +30,19 @@ export function OfferBox({
       <p className="font-accent text-[0.68rem] tracking-[0.2em] text-gold uppercase">
         Continuación de tu proyecto
       </p>
+      {storyTitle ? (
+        <p className="mt-3 text-base text-gold-soft">
+          Para desarrollar: <span className="text-ivory italic">«{storyTitle}»</span>
+        </p>
+      ) : null}
       <h3 className="font-display mt-3 text-2xl leading-snug text-ivory md:text-3xl">{title}</h3>
       <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-ivory-muted">{subtitle}</p>
 
       <ul className="mx-auto mt-6 max-w-md space-y-2 text-left text-base text-ivory-muted" role="list">
         {[
-          'Tu proyecto inicial guardado (título, seudónimo, premisa, conflicto)',
+          'Tu concepto del test como punto de partida (título, seudónimo, premisa)',
+          'Prompts listos para pegar en ChatGPT / Claude / Gemini',
           'Estructura de capítulos + evolución del romance',
-          'Prompts listos para desarrollar cada etapa con IA',
           'Sinopsis, descripción de venta y plan de 7 días',
         ].map((item) => (
           <li key={item} className="flex gap-2 border border-white/10 bg-elevated/50 px-3 py-2.5">
@@ -46,6 +53,17 @@ export function OfferBox({
           </li>
         ))}
       </ul>
+
+      <div className="mx-auto mt-6 max-w-md rounded-[2px] border border-white/10 bg-bg/40 p-4 text-left">
+        <p className="font-accent text-[0.62rem] tracking-[0.14em] text-gold uppercase">
+          Qué pasa al pagar
+        </p>
+        <ol className="mt-3 space-y-2 text-sm text-ivory-muted md:text-base">
+          <li>1. Pagas en Hotmart (seguro).</li>
+          <li>2. Acceso inmediato al método digital.</li>
+          <li>3. Continúas desde el concepto que acabas de crear.</li>
+        </ol>
+      </div>
 
       <p className="mt-6 text-ivory-faint">
         Precio normal <s>{APP_CONFIG.PRICE_REFERENCE}</s>

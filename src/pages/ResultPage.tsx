@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { StoryCover } from '@/components/StoryCover'
 import { LockedContent } from '@/components/LockedContent'
+import { MethodPreview } from '@/components/MethodPreview'
 import { OfferBox } from '@/components/OfferBox'
 import { FAQAccordion } from '@/components/FAQAccordion'
 import { CTAButton } from '@/components/CTAButton'
@@ -163,9 +164,19 @@ export function ResultPage() {
         <LockedContent openChapters={openChapters} ctaId="locked_structure" />
       </div>
 
+      {/* BLOCO 2.5 — Prova tangível do método (prompts reais) */}
+      <div className="mt-10">
+        <MethodPreview project={project} />
+      </div>
+
       {/* BLOCO 3 — Oferta cedo */}
       <div className="mt-10">
-        <OfferBox anchor ctaId="offer_early" ctaLabel={UNLOCK_CTA} />
+        <OfferBox
+          anchor
+          ctaId="offer_early"
+          ctaLabel={UNLOCK_CTA}
+          storyTitle={project.title}
+        />
       </div>
 
       <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row">
@@ -187,6 +198,10 @@ export function ResultPage() {
       {/* BLOCO 4 — Cómo funciona */}
       <section className="mt-14 border-t border-white/10 pt-12">
         <h2 className="font-display text-3xl text-ivory md:text-4xl">Cómo funciona</h2>
+        <p className="mt-3 text-lg text-ivory-muted">
+          El test ya hizo lo difícil: nació tu idea. El pago es la continuación — no otro producto
+          desconectado.
+        </p>
         <ol className="mt-5 space-y-3 text-lg text-ivory-muted">
           <li>1. Entras con tu proyecto inicial (el del test).</li>
           <li>2. Usas las estructuras y prompts del método.</li>
@@ -251,6 +266,7 @@ export function ResultPage() {
           subtitle="Recibe la estructura, los personajes, los prompts y el paso a paso para transformar este concepto en un libro digital."
           ctaId="offer_final"
           ctaLabel={UNLOCK_CTA}
+          storyTitle={project.title}
         />
       </div>
 
