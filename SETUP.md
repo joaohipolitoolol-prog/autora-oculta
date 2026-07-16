@@ -77,7 +77,17 @@ vercel --prod
 
 O conectar el repo a Vercel (SPA con rewrite a `index.html`).
 
-## 8. Probar el flujo
+## 9. Entregável do produto (pós-compra)
+
+Área do método (HTML):
+
+- Pasta: `public/entregavel/`
+- URL: `https://autora-oculta.vercel.app/entregavel/`
+- Guia Hotmart: `ENTREGA-HOTMART.md`
+
+Cole esse link como conteúdo do produto na Hotmart.
+
+## 10. Probar el flujo
 
 1. `npm run dev`
 2. Abrir `/`
