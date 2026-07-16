@@ -1,9 +1,8 @@
 /**
  * Autora Oculta — configuración central
- * Sustituye CHECKOUT_URL por la URL real del checkout.
  */
 export const APP_CONFIG = {
-  CHECKOUT_URL: 'CHECKOUT_URL',
+  CHECKOUT_URL: 'https://pay.hotmart.com/R106762918Y',
   PRICE_CURRENT: 'US$ 7,49',
   PRICE_REFERENCE: 'US$ 27',
   PRICE_VALUE: 7.49,

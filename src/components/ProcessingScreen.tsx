@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { QUESTIONS } from '@/data/questions'
 import type { GeneratedProject, QuizAnswers } from '@/types/quiz'
 
-type Phase = 'loading' | 'reveal'
-
 type Props = {
   answers: QuizAnswers
   project: GeneratedProject
@@ -23,175 +21,162 @@ function buildSteps(answers: QuizAnswers, name?: string) {
     },
     {
       label: `Mundo: ${optionTitle('scenario', answers.scenario)}`,
-      detail: 'Atmósfera, símbolos y dirección visual',
+      detail: 'Atmósfera y dirección visual',
     },
     {
       label: `Él: ${optionTitle('male', answers.male)}`,
-      detail: 'Presencia, peligro y atracción',
+      detail: 'Presencia y peligro',
     },
     {
       label: `Ella: ${optionTitle('female', answers.female)}`,
-      detail: 'Voz, herida y deseo',
+      detail: 'Voz y deseo',
     },
     {
       label: `Lazo: ${optionTitle('relationship', answers.relationship)}`,
       detail: optionTitle('conflict', answers.conflict),
     },
     {
-      label: name ? `${name}, sellando tu identidad oculta…` : 'Sellando tu identidad oculta…',
-      detail: 'Seudónimo, título y gancho inicial',
+      label: 'Sellando tu identidad oculta…',
+      detail: 'Título, seudónimo y gancho',
     },
   ]
 }
 
-export function ProcessingScreen({ answers, project, onDone }: Props) {
+/** Una sola secuencia → resultado. Sin pantalla intermedia que “salta”. */
+export function ProcessingScreen({ answers, onDone }: Props) {
   const name = answers.creatorName?.trim()
   const steps = useMemo(() => buildSteps(answers, name), [answers, name])
   const [step, setStep] = useState(0)
-  const [phase, setPhase] = useState<Phase>('loading')
-  const [visibleLines, setVisibleLines] = useState(1)
+  const [finishing, setFinishing] = useState(false)
 
   useEffect(() => {
     const timers: number[] = []
+    const stepMs = 900
+
     steps.forEach((_, i) => {
       timers.push(
         window.setTimeout(() => {
           setStep(i)
-          setVisibleLines(i + 1)
-        }, i * 1100),
+        }, i * stepMs),
       )
     })
 
-    const revealAt = steps.length * 1100 + 500
-    timers.push(window.setTimeout(() => setPhase('reveal'), revealAt))
-    timers.push(window.setTimeout(onDone, revealAt + 2800))
+    const finishAt = steps.length * stepMs + 200
+    timers.push(
+      window.setTimeout(() => {
+        setFinishing(true)
+        setStep(steps.length - 1)
+      }, finishAt),
+    )
+
+    // Breve “100%” y va directo al resultado (el wow está allá)
+    timers.push(window.setTimeout(onDone, finishAt + 700))
 
     return () => timers.forEach((t) => window.clearTimeout(t))
   }, [steps, onDone])
 
-  const progress =
-    phase === 'reveal' ? 100 : Math.min(96, Math.round(((step + 1) / steps.length) * 96))
+  const progress = finishing
+    ? 100
+    : Math.round(((step + 1) / steps.length) * 100)
+
+  const current = steps[Math.min(step, steps.length - 1)]
 
   return (
-    <div className="flex min-h-[70dvh] flex-col items-center justify-center px-5 py-12 text-center">
-      {phase === 'loading' ? (
-        <>
-          <div className="relative mb-10 h-28 w-28" aria-hidden="true">
+    <div className="flex min-h-[70dvh] flex-col items-center px-5 pb-10 pt-6 text-center md:justify-center md:py-12">
+      {/* Anel fixo no topo no mobile — não some ao crescer a lista */}
+      <div className="sticky top-0 z-10 w-full bg-bg/90 pb-4 pt-2 backdrop-blur-sm">
+        <div className="relative mx-auto h-24 w-24" aria-hidden="true">
+          <svg
+            className="absolute inset-0 h-full w-full -rotate-90"
+            viewBox="0 0 112 112"
+            fill="none"
+          >
+            <circle cx="56" cy="56" r="50" stroke="rgba(184,151,90,0.14)" strokeWidth="2.5" />
+            <circle
+              cx="56"
+              cy="56"
+              r="50"
+              stroke="#b8975a"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeDasharray={`${(progress / 100) * 314} 314`}
+              className="transition-[stroke-dasharray] duration-500 ease-out"
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
             <svg
-              className="absolute inset-0 h-full w-full -rotate-90"
-              viewBox="0 0 112 112"
+              width="26"
+              height="26"
+              viewBox="0 0 36 36"
               fill="none"
+              className="text-gold-soft opacity-90"
             >
-              <circle cx="56" cy="56" r="50" stroke="rgba(184,151,90,0.14)" strokeWidth="2.5" />
-              <circle
-                cx="56"
-                cy="56"
-                r="50"
-                stroke="#b8975a"
-                strokeWidth="2.5"
+              <path
+                d="M6 16c0-6.5 5.2-11 12-11s12 4.5 12 11c0 5.5-3.2 9.2-6.5 11.2-.8.5-1.5-.2-1.5-1v-2.4c0-.6-.4-1.1-.9-1.3C19.2 21.8 18.2 21.5 18 21.5s-1.2.3-3.1 1c-.5.2-.9.7-.9 1.3v2.4c0 .8-.7 1.5-1.5 1C9.2 25.2 6 21.5 6 16Z"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M13.5 16.5c.4-.8 1.1-1.3 1.8-1.3M22.5 16.5c-.4-.8-1.1-1.3-1.8-1.3"
+                stroke="currentColor"
+                strokeWidth="1.4"
                 strokeLinecap="round"
-                strokeDasharray={`${(progress / 100) * 314} 314`}
-                className="transition-[stroke-dasharray] duration-700 ease-out"
               />
             </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
-              {/* Selo / máscara — identidade oculta */}
-              <svg width="28" height="28" viewBox="0 0 36 36" fill="none" className="text-gold-soft opacity-90">
-                <path
-                  d="M6 16c0-6.5 5.2-11 12-11s12 4.5 12 11c0 5.5-3.2 9.2-6.5 11.2-.8.5-1.5-.2-1.5-1v-2.4c0-.6-.4-1.1-.9-1.3C19.2 21.8 18.2 21.5 18 21.5s-1.2.3-3.1 1c-.5.2-.9.7-.9 1.3v2.4c0 .8-.7 1.5-1.5 1C9.2 25.2 6 21.5 6 16Z"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M13.5 16.5c.4-.8 1.1-1.3 1.8-1.3M22.5 16.5c-.4-.8-1.1-1.3-1.8-1.3"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="font-display text-lg tabular-nums leading-none text-ivory">
-                {progress}%
-              </span>
-            </div>
+            <span className="font-display text-lg tabular-nums leading-none text-ivory">
+              {progress}%
+            </span>
           </div>
-
-          <p className="font-accent mb-3 text-[0.68rem] tracking-[0.2em] text-gold uppercase">
-            Autora Oculta
-          </p>
-          <p
-            className="font-display max-w-lg text-3xl leading-tight text-ivory md:text-4xl"
-            role="status"
-            aria-live="polite"
-          >
-            {steps[step]?.label}
-          </p>
-          <p className="mt-3 max-w-md text-sm text-ivory-faint">{steps[step]?.detail}</p>
-
-          <ul className="mt-10 w-full max-w-md space-y-2 text-left" role="list">
-            {steps.slice(0, visibleLines).map((s, i) => {
-              const active = i === step
-              const done = i < step
-              return (
-                <li
-                  key={s.label}
-                  className={`flex items-start gap-3 border px-3 py-2.5 transition-all duration-500 ${
-                    active
-                      ? 'border-gold/40 bg-wine/25 text-ivory'
-                      : 'border-white/8 bg-elevated/50 text-ivory-muted'
-                  }`}
-                >
-                  <span
-                    className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[0.6rem] ${
-                      done
-                        ? 'border-gold/55 bg-gold/15 text-gold'
-                        : active
-                          ? 'border-gold/40 text-gold-soft'
-                          : 'border-white/20 text-ivory-faint'
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {done ? '●' : i + 1}
-                  </span>
-                  <span className="text-sm leading-snug">{s.label}</span>
-                </li>
-              )
-            })}
-          </ul>
-
-          <p className="mt-8 max-w-sm text-sm text-ivory-faint">
-            Esto no escribe un libro completo. Monta el concepto inicial de tu proyecto.
-          </p>
-        </>
-      ) : (
-        <div className="w-full max-w-md" style={{ animation: 'ao-reveal 0.75s ease-out both' }}>
-          <p className="font-accent mb-4 text-[0.68rem] tracking-[0.2em] text-gold uppercase">
-            Tu proyecto está listo
-          </p>
-          <div className="rounded-[2px] border border-gold/40 bg-gradient-to-b from-wine/40 to-elevated px-6 py-9 text-center">
-            <p className="text-sm text-ivory-faint">Título sugerido</p>
-            <h2 className="font-display mt-2 text-3xl leading-tight text-balance text-ivory md:text-4xl">
-              {project.title}
-            </h2>
-            <div className="mx-auto my-5 h-px w-16 bg-gold/40" />
-            <p className="text-sm text-ivory-faint">Seudónimo</p>
-            <p className="font-accent mt-1 text-lg tracking-[0.08em] text-gold-soft">
-              {project.penName}
-            </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {project.tags.slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className="border border-white/15 px-2.5 py-1 text-[0.7rem] text-ivory-muted"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-          <p className="mt-6 text-ivory-muted">Abriendo el resultado completo…</p>
         </div>
-      )}
+      </div>
+
+      <p className="font-accent mb-3 mt-2 text-[0.68rem] tracking-[0.2em] text-gold uppercase">
+        Autora Oculta
+      </p>
+      <p
+        className="font-display max-w-lg text-2xl leading-tight text-ivory md:text-4xl"
+        role="status"
+        aria-live="polite"
+      >
+        {finishing ? 'Tu concepto está listo' : current?.label}
+      </p>
+      <p className="mt-2 max-w-md text-base text-ivory-faint">
+        {finishing ? 'Abriendo tu resultado…' : current?.detail}
+      </p>
+
+      <ul className="mt-8 w-full max-w-md space-y-2 text-left" role="list">
+        {steps.slice(0, step + 1).map((s, i) => {
+          const active = !finishing && i === step
+          const done = finishing || i < step
+          return (
+            <li
+              key={s.label}
+              className={`flex items-start gap-3 border px-3 py-2.5 transition-all duration-400 ${
+                active
+                  ? 'border-gold/40 bg-wine/25 text-ivory'
+                  : 'border-white/8 bg-elevated/50 text-ivory-muted'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[0.6rem] ${
+                  done
+                    ? 'border-gold/55 bg-gold/15 text-gold'
+                    : 'border-gold/40 text-gold-soft'
+                }`}
+                aria-hidden="true"
+              >
+                {done ? '●' : i + 1}
+              </span>
+              <span className="text-sm leading-snug md:text-base">{s.label}</span>
+            </li>
+          )
+        })}
+      </ul>
+
+      <p className="mt-8 max-w-sm text-sm text-ivory-faint">
+        Esto no escribe un libro completo. Monta el concepto inicial de tu proyecto.
+      </p>
     </div>
   )
 }

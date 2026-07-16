@@ -133,7 +133,6 @@ export function goToCheckout(cta: string) {
   const href = buildCheckoutUrl({ cta })
   const real = href !== '#oferta' && hasRealCheckout()
 
-  // Solo InitiateCheckout cuando hay checkout real (evita IC falsos en ads)
   if (real) {
     trackEvent('InitiateCheckout', { cta_location: cta })
   }
@@ -143,5 +142,6 @@ export function goToCheckout(cta: string) {
     document.getElementById('oferta')?.scrollIntoView({ behavior: 'smooth' })
     return
   }
-  window.location.href = href
+  // Hotmart: mesma aba (melhor em IG/FB in-app browser)
+  window.location.assign(href)
 }

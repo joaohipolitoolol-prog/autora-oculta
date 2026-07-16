@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 export function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
   const showStartCta = pathname === '/' || pathname === '/terminos' || pathname === '/privacidad'
+  const isProcessing = pathname === '/procesando' || pathname === '/processando'
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -19,12 +20,17 @@ export function Layout({ children }: { children: ReactNode }) {
           <Link to="/" className="font-display text-2xl text-ivory no-underline">
             Autora Oculta
           </Link>
-          {showStartCta ? (
+          {isProcessing ? (
+            <span className="text-sm text-ivory-faint">Creando…</span>
+          ) : showStartCta ? (
             <Link to="/quiz" className="text-sm text-gold-soft no-underline hover:text-ivory">
               Descubrir mi historia
             </Link>
           ) : pathname === '/resultado' ? (
-            <Link to="/quiz?nuevo=1" className="text-sm text-ivory-faint no-underline hover:text-gold-soft">
+            <Link
+              to="/quiz?nuevo=1"
+              className="text-sm text-ivory-faint no-underline hover:text-gold-soft"
+            >
               Rehacer el test
             </Link>
           ) : (
