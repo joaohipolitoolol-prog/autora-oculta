@@ -30,6 +30,12 @@ export function QuizPage() {
     }
   }, [])
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }, [step])
+
   const canContinue = useMemo(() => {
     if (isCapture) return true
     return Boolean(selected)
@@ -47,12 +53,10 @@ export function QuizPage() {
     if (!canContinue) return
     if (step < total - 1) {
       setStep((s) => s + 1)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
     if (step === total - 1) {
       setStep(total)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
     const complete: QuizAnswers = {

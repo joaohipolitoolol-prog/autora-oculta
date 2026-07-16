@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { Layout } from '@/components/Layout'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { HomePage } from '@/pages/HomePage'
 import { QuizPage } from '@/pages/QuizPage'
 import { ProcessingPage } from '@/pages/ProcessingPage'
@@ -25,6 +26,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <RouteTracker />
       <Layout>
         <Routes>
@@ -32,7 +34,7 @@ export default function App() {
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/processando" element={<ProcessingPage />} />
           <Route path="/resultado" element={<ResultPage />} />
-          <Route path="/desbloquear" element={<Navigate to="/resultado#oferta" replace />} />
+          <Route path="/desbloquear" element={<Navigate to="/resultado" replace />} />
           <Route path="/terminos" element={<TerminosPage />} />
           <Route path="/privacidad" element={<PrivacidadPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
