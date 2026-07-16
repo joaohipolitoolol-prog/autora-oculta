@@ -102,7 +102,7 @@ export interface GeneratedProject {
     coverStyle: string
   }
   seriesPotential: string
-  lockedChapters: string[]
+  lockedChapters: { title: string; teaser: string }[]
   answers: QuizAnswers
   createdAt: string
 }

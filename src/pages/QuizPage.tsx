@@ -27,7 +27,6 @@ export function QuizPage() {
   const [step, setStep] = useState(() => parsePaso(searchParams.get('paso'), QUESTIONS.length) ?? 0)
   const [answers, setAnswers] = useState<Partial<QuizAnswers>>({})
   const [creatorName, setCreatorName] = useState('')
-  const [email, setEmail] = useState('')
   const [advancing, setAdvancing] = useState(false)
   const [hydrated, setHydrated] = useState(false)
   const startedRef = useRef(false)
@@ -60,7 +59,6 @@ export function QuizPage() {
       clearQuizProgress()
       setAnswers({})
       setCreatorName('')
-      setEmail('')
       setStep(0)
       const next = new URLSearchParams(searchParams)
       next.delete('nuevo')
@@ -75,7 +73,6 @@ export function QuizPage() {
     if (saved) {
       setAnswers(saved)
       if (saved.creatorName) setCreatorName(saved.creatorName)
-      if (saved.email) setEmail(saved.email)
     }
 
     const fromUrl = parsePaso(searchParams.get('paso'), total)
@@ -168,7 +165,6 @@ export function QuizPage() {
     const complete: QuizAnswers = {
       ...(answers as QuizAnswers),
       creatorName: opts?.clearOptional ? undefined : creatorName.trim() || undefined,
-      email: opts?.clearOptional ? undefined : email.trim() || undefined,
     }
     const requiredOk = QUESTIONS.every((q) => Boolean(complete[q.id]))
     if (!requiredOk) {
@@ -176,12 +172,8 @@ export function QuizPage() {
       setStep(Math.max(0, firstMissing))
       return
     }
-    if (complete.email) {
-      trackEvent('Lead', { method: 'quiz_capture' })
-    }
     saveAnswers(complete)
     trackEvent('QuizCompleted', {
-      hasEmail: Boolean(complete.email),
       hasName: Boolean(complete.creatorName),
     })
     navigate('/procesando')
@@ -210,7 +202,7 @@ export function QuizPage() {
     setStep((s) => s - 1)
   }
 
-  const hasOptionalData = Boolean(creatorName.trim() || email.trim())
+  const hasOptionalData = Boolean(creatorName.trim())
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-8 pb-32">
@@ -244,13 +236,13 @@ export function QuizPage() {
       {isCapture && (
         <div className="mt-8">
           <h1 className="font-display text-3xl text-ivory md:text-4xl">
-            Tu historia está lista
+            Tu concepto está listo
           </h1>
-          <p className="mt-3 text-ivory-muted">
+          <p className="mt-3 text-lg text-ivory-muted">
             Opcional: deja tu nombre para personalizar el saludo. Puedes continuar sin llenar nada.
           </p>
           <label className="mt-6 block">
-            <span className="mb-2 block text-sm text-ivory-muted">Tu nombre (opcional)</span>
+            <span className="mb-2 block text-base text-ivory-muted">Tu nombre (opcional)</span>
             <input
               type="text"
               value={creatorName}
@@ -260,23 +252,8 @@ export function QuizPage() {
               autoComplete="given-name"
             />
           </label>
-          <p className="mt-2 text-sm text-ivory-faint">Este nombre no será utilizado como tu seudónimo.</p>
-
-          <label className="mt-6 block">
-            <span className="mb-2 block text-sm text-ivory-muted">
-              Correo (opcional, solo se guarda en este dispositivo)
-            </span>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="min-h-12 w-full rounded-[2px] border border-white/15 bg-elevated px-4 text-ivory"
-              placeholder="Correo electrónico"
-              autoComplete="email"
-            />
-          </label>
           <p className="mt-2 text-sm text-ivory-faint">
-            No enviamos correos automáticamente. El campo es opcional.
+            Este nombre no será utilizado como tu seudónimo.
           </p>
 
           <div className="mt-8 space-y-3">
@@ -285,7 +262,7 @@ export function QuizPage() {
             </CTAButton>
             {hasOptionalData ? (
               <CTAButton full variant="ghost" onClick={() => finishQuiz({ clearOptional: true })}>
-                Continuar sin nombre ni correo
+                Continuar sin nombre
               </CTAButton>
             ) : null}
           </div>

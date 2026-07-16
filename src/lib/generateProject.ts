@@ -52,16 +52,35 @@ function buildHook(a: QuizAnswers, female: string, male: string): string {
   return lines.join('\n\n')
 }
 
-function buildLockedChapters(a: QuizAnswers, female: string, male: string): string[] {
+function buildLockedChapters(
+  a: QuizAnswers,
+  female: string,
+  male: string,
+): { title: string; teaser: string }[] {
   const conflict = CONFLICT_DATA[a.conflict]
+  const opening =
+    conflict.openingObject.charAt(0).toUpperCase() + conflict.openingObject.slice(1)
   return [
-    `Capítulo 1: ${conflict.openingObject.charAt(0).toUpperCase()}${conflict.openingObject.slice(1)}`,
-    `Capítulo 2: El hombre que ya conocía su nombre`,
-    `Capítulo 3: La habitación cerrada`,
-    `Capítulo 4: Las reglas de ${male}`,
-    `Capítulo 5: Lo que ${female} no debía encontrar`,
-    `Capítulo 6: El primer roce peligroso`,
-    `Capítulo 7: La verdad a medias`,
+    {
+      title: `Capítulo 1: ${opening}`,
+      teaser: `${female} recibe una señal que no debía ver — y ya no puede fingir que no sabe.`,
+    },
+    {
+      title: `Capítulo 2: El hombre que ya sabía su nombre`,
+      teaser: `${male} revela un detalle imposible: él conocía su pasado antes del primer encuentro.`,
+    },
+    {
+      title: `Capítulo 3: La habitación cerrada`,
+      teaser: `Una puerta prohibida esconde la primera verdad que los une: ${conflict.secret}.`,
+    },
+    {
+      title: `Capítulo 4: Las reglas de ${male}`,
+      teaser: `Las condiciones del juego quedan claras. Ella puede aceptarlas… o romperlas.`,
+    },
+    {
+      title: `Capítulo 5: Lo que ${female} no debía encontrar`,
+      teaser: `Un documento, una mirada, una deuda antigua. El secreto deja de ser abstracto.`,
+    },
   ]
 }
 

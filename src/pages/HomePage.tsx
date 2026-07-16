@@ -30,8 +30,8 @@ export function HomePage() {
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-ivory-muted">
             Responde 8 preguntas y recibe ahora: título, seudónimo, premisa, gancho y el conflicto de tu historia.
           </p>
-          <ul className="mt-5 space-y-2 text-ivory-muted" role="list">
-            <li>· Resultado concreto, no un chat genérico.</li>
+          <ul className="mt-5 space-y-2 text-lg text-ivory-muted" role="list">
+            <li>· Una idea personalizada, no una respuesta genérica.</li>
             <li>· Sin mostrar tu rostro. Sin experiencia previa.</li>
             <li>· Luego puedes desbloquear el método para desarrollarlo y publicarlo.</li>
           </ul>

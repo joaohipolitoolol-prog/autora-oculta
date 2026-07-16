@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { StoryCover } from '@/components/StoryCover'
-import { StoryTags } from '@/components/StoryTags'
 import { LockedContent } from '@/components/LockedContent'
 import { OfferBox } from '@/components/OfferBox'
 import { FAQAccordion } from '@/components/FAQAccordion'
@@ -11,6 +10,8 @@ import { clearQuizProgress, loadProject } from '@/lib/storage'
 import { goToCheckout, trackEvent } from '@/lib/analytics'
 import type { GeneratedProject } from '@/types/quiz'
 import { APP_CONFIG } from '@/config'
+
+const UNLOCK_CTA = `Desbloquear mi proyecto por ${APP_CONFIG.PRICE_CURRENT}`
 
 export function ResultPage() {
   const navigate = useNavigate()
@@ -34,7 +35,7 @@ export function ResultPage() {
   }, [navigate])
 
   useEffect(() => {
-    const onScroll = () => setShowSticky(window.scrollY > 420)
+    const onScroll = () => setShowSticky(window.scrollY > 380)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -47,6 +48,14 @@ export function ResultPage() {
   }
 
   const creator = project.answers.creatorName?.trim()
+  const impactLine = project.hook.split('\n\n')[0]?.trim() || project.emotionalPromise
+  const openChapters = (Array.isArray(project.lockedChapters) ? project.lockedChapters : [])
+    .map((ch) =>
+      typeof ch === 'string'
+        ? { title: ch, teaser: 'Una escena clave del conflicto central.' }
+        : ch,
+    )
+    .slice(0, 3)
 
   const copyResult = async () => {
     const text = [
@@ -69,119 +78,84 @@ export function ResultPage() {
 
   const redo = () => {
     clearQuizProgress()
-    navigate('/quiz')
+    navigate('/quiz?nuevo=1')
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-10 pb-28 md:pb-10">
-      <p className="font-accent text-[0.68rem] tracking-[0.18em] text-gold uppercase">Resultado</p>
-      <h1 className="font-display mt-2 text-4xl text-ivory md:text-5xl">
-        {creator ? `${creator}, tu historia oculta ha sido revelada` : 'Tu historia oculta ha sido revelada'}
+    <div className="mx-auto max-w-3xl px-5 py-10 pb-28 md:pb-12">
+      {/* BLOCO 1 — Resultado / momento uau */}
+      <p className="font-accent text-[0.72rem] tracking-[0.18em] text-gold uppercase">
+        Tu concepto está listo
+      </p>
+      <h1 className="font-display mt-2 text-3xl leading-tight text-ivory md:text-4xl">
+        {creator
+          ? `${creator}, tu idea ya tiene nombre, conflicto y universo`
+          : 'Tu idea ya tiene nombre, conflicto y universo'}
       </h1>
       <p className="mt-3 text-lg text-ivory-muted">
-        Basado en tus elecciones, este es el proyecto que podrías comenzar a desarrollar.
+        Esto no es una novela terminada. Es el proyecto inicial que puedes desarrollar.
       </p>
 
       <div className="mt-8">
-        <StoryCover title={project.title} penName={project.penName} tags={project.tags} />
+        <StoryCover
+          title={project.title}
+          penName={project.penName}
+          tags={project.tags}
+          impactLine={impactLine}
+        />
       </div>
 
-      <section className="mt-8">
-        <h2 className="font-display text-2xl text-ivory">Tus elementos</h2>
-        <div className="mt-4">
-          <StoryTags tags={project.tags} />
+      <section className="mt-10">
+        <h2 className="font-display text-2xl text-ivory md:text-3xl">Premisa</h2>
+        <p className="mt-4 text-lg leading-relaxed text-ivory-muted">{project.premise}</p>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="font-display text-2xl text-ivory md:text-3xl">Personajes</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {[
+            ['Protagonista', project.femaleSummary],
+            ['Interés amoroso', project.maleSummary],
+            ['Conflicto', project.conflictSummary],
+            ['Secreto', project.secretSummary],
+          ].map(([label, body]) => (
+            <article key={label} className="border border-white/10 bg-elevated/80 p-4">
+              <h3 className="font-accent text-[0.7rem] tracking-[0.16em] text-gold uppercase">
+                {label}
+              </h3>
+              <p className="mt-2 text-base leading-relaxed text-ivory-muted">{body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="mt-8">
-        <h2 className="font-display text-2xl text-ivory">Premisa</h2>
-        <p className="mt-3 leading-relaxed text-ivory-muted">{project.premise}</p>
-      </section>
-
       <section className="mt-8 rounded-[2px] border border-white/10 bg-elevated p-5">
-        <h2 className="font-display text-2xl text-ivory">Gancho inicial</h2>
-        <pre className="font-display mt-4 whitespace-pre-wrap text-xl leading-relaxed text-ivory italic">
+        <h2 className="font-display text-2xl text-ivory">Gancho (escena de apertura)</h2>
+        <pre className="font-display mt-4 whitespace-pre-wrap text-xl leading-relaxed text-ivory italic md:text-2xl">
           {project.hook}
         </pre>
       </section>
 
-      {/* CTA temprana — antes de que se canse de leer */}
-      <section className="mt-8 rounded-[2px] border border-gold/35 bg-wine/20 p-5 text-center">
-        <p className="font-display text-2xl text-ivory">Esto es solo el boceto</p>
-        <p className="mt-2 text-ivory-muted">
-          Gratis ves título, gancho y personajes. Al desbloquear recibes: estructura de capítulos, prompts, sinopsis comercial y guía para publicar — sin mostrar tu cara.
+      {/* Expectativa clara ANTES do primeiro botão pago */}
+      <aside className="mt-8 rounded-[2px] border border-gold/30 bg-wine/15 p-5 text-left">
+        <p className="font-display text-2xl text-ivory">
+          Tu historia no está terminada. Está lista para ser desarrollada.
         </p>
-        <div className="mt-5">
-          <CTAButton full onClick={() => goToCheckout('result_early')}>
-            Desbloquear el método · {APP_CONFIG.PRICE_CURRENT}
-          </CTAButton>
-        </div>
-        <p className="mt-2 text-sm text-ivory-faint">
-          Acceso inmediato · 7 días de prueba · Antes <s>{APP_CONFIG.PRICE_REFERENCE}</s>
+        <p className="mt-3 text-base leading-relaxed text-ivory-muted">
+          Autora Oculta no genera una novela completa automáticamente. Al desbloquear, recibirás la
+          estructura, los personajes, los prompts y el método para convertir este concepto en una
+          historia real — y tu proyecto del test queda guardado como punto de partida.
         </p>
-      </section>
+      </aside>
 
-      <section className="mt-10">
-        <h2 className="font-display text-2xl text-ivory">Promesa emocional</h2>
-        <p className="font-display mt-3 text-2xl text-gold-soft italic">{project.emotionalPromise}</p>
-      </section>
-
-      <section className="mt-10 grid gap-4 md:grid-cols-2">
-        {[
-          ['Protagonista femenina', project.femaleSummary],
-          ['Interés amoroso', project.maleSummary],
-          ['Conflicto entre ellos', project.conflictSummary],
-          ['Secreto que los conecta', project.secretSummary],
-        ].map(([label, body]) => (
-          <article key={label} className="border border-white/10 bg-elevated/80 p-4">
-            <h3 className="font-accent text-[0.65rem] tracking-[0.16em] text-gold uppercase">{label}</h3>
-            <p className="mt-2 text-ivory-muted">{body}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="mt-10">
-        <h2 className="font-display text-2xl text-ivory">Dirección visual</h2>
-        <ul className="mt-3 space-y-2 text-ivory-muted" role="list">
-          <li><strong className="text-ivory">Colores:</strong> {project.visual.colors.join(' · ')}</li>
-          <li><strong className="text-ivory">Símbolos:</strong> {project.visual.symbols.join(' · ')}</li>
-          <li><strong className="text-ivory">Ambiente:</strong> {project.visual.setting}</li>
-          <li><strong className="text-ivory">Estilo de capa:</strong> {project.visual.coverStyle}</li>
-        </ul>
-      </section>
-
-      <section className="mt-10">
-        <h2 className="font-display text-2xl text-ivory">Potencial de serie</h2>
-        <p className="mt-3 text-ivory-muted">{project.seriesPotential}</p>
-      </section>
-
+      {/* BLOCO 2 — Conteúdo bloqueado (documento) */}
       <div className="mt-8">
-        <LockedContent
-          title="Tu proyecto completo todavía está bloqueado"
-          previews={project.lockedChapters.slice(0, 5)}
-          items={[
-            'Perfil completo de los protagonistas',
-            'Secretos y heridas emocionales',
-            'Estructura de hasta 25 capítulos',
-            'Evolución del romance',
-            'Escenas de tensión',
-            'Conflicto secundario',
-            'Clímax y final',
-            'Prompts para escribir cada etapa',
-            'Sinopsis comercial',
-            'Descripción de venta',
-            'Seudónimo e identidad visual',
-            'Guía de publicación',
-            'Modelos de anuncios',
-            'Plan de ejecución',
-          ]}
-        />
+        <LockedContent openChapters={openChapters} ctaId="locked_structure" />
       </div>
 
-      <div className="mt-6">
-        <CTAButton full onClick={() => goToCheckout('result_unlock')}>
-          Desbloquear mi proyecto
-        </CTAButton>
+      {/* BLOCO 3 — Oferta cedo */}
+      <div className="mt-10">
+        <OfferBox anchor ctaId="offer_early" ctaLabel={UNLOCK_CTA} />
       </div>
 
       <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row">
@@ -200,117 +174,92 @@ export function ResultPage() {
         </CTAButton>
       </div>
 
-      <section className="mt-16 border-t border-white/10 pt-12">
-        <h2 className="font-display text-4xl text-ivory">
-          Tu historia ya comenzó. Ahora descubre cómo convertirla en un proyecto real.
-        </h2>
-        <p className="mt-4 text-lg text-ivory-muted">
-          Autora Oculta te entrega el método, las estructuras y los prompts necesarios para desarrollar tu historia usando ChatGPT, Claude, Gemini o la herramienta de inteligencia artificial que prefieras.
-        </p>
-        <p className="mt-4 rounded-[2px] border border-gold/25 bg-elevated p-4 text-ivory-muted">
-          Autora Oculta no entrega una novela terminada automáticamente. Recibirás un sistema guiado para desarrollar, escribir, revisar, publicar y presentar tu proyecto.
-        </p>
+      {/* BLOCO 4 — Cómo funciona */}
+      <section className="mt-14 border-t border-white/10 pt-12">
+        <h2 className="font-display text-3xl text-ivory md:text-4xl">Cómo funciona</h2>
+        <ol className="mt-5 space-y-3 text-lg text-ivory-muted">
+          <li>1. Entras con tu proyecto inicial (el del test).</li>
+          <li>2. Usas las estructuras y prompts del método.</li>
+          <li>3. Desarrollas la historia en ChatGPT, Claude, Gemini u otra IA.</li>
+          <li>4. Preparas publicación y presentación comercial.</li>
+        </ol>
+      </section>
 
-        <div className="mt-8">
-          <OfferBox ctaId="offer_mid" anchor />
-        </div>
-
-        <h3 className="font-display mt-10 text-2xl text-ivory">Qué recibirás</h3>
-        <ul className="mt-4 grid gap-2 text-ivory-muted md:grid-cols-2" role="list">
+      {/* BLOCO 5 — Qué recibes */}
+      <section className="mt-12">
+        <h2 className="font-display text-3xl text-ivory md:text-4xl">Qué recibirás</h2>
+        <ul className="mt-5 grid gap-2 text-base text-ivory-muted md:grid-cols-2" role="list">
           {[
+            'Tu proyecto inicial del quiz guardado',
             'Método Autora Oculta',
-            'Mapa del Mercado Oscuro',
-            'Creador de Universo',
-            'Estructura de Historia Magnética',
-            'Personajes Imposibles de Olvidar',
-            'Prompts para desarrollar capítulos',
-            'Modelo de hasta 25 capítulos',
-            'Creador de seudónimo',
-            'Modelo de sinopsis',
-            'Modelo de descripción comercial',
+            'Estructura de hasta 25 capítulos',
+            'Perfiles y secretos de personajes',
+            'Prompts para cada etapa',
+            'Sinopsis y descripción de venta',
             'Guía de publicación',
-            'Guía de venta directa',
-            'Modelos de anuncios narrativos',
-            'Proyecto completo de ejemplo',
             'Plan práctico de 7 días',
           ].map((item) => (
-            <li key={item} className="border border-white/10 bg-elevated/60 px-3 py-2">
+            <li key={item} className="border border-white/10 bg-elevated/60 px-3 py-2.5">
               {item}
             </li>
           ))}
         </ul>
-
-        <h3 className="font-display mt-10 text-2xl text-ivory">Cómo funciona</h3>
-        <ol className="mt-4 space-y-3 text-ivory-muted">
-          <li>1. Recibes tu proyecto inicial.</li>
-          <li>2. Utilizas las estructuras y prompts.</li>
-          <li>3. Desarrollas la historia en tu herramienta de IA favorita.</li>
-          <li>4. Preparas la publicación y la presentación comercial.</li>
-        </ol>
-
-        <h3 className="font-display mt-10 text-2xl text-ivory">No necesitas ser escritora profesional</h3>
-        <p className="mt-3 text-ivory-muted">
-          No comenzarás frente a una página vacía. Tendrás una ruta, preguntas, modelos y comandos para desarrollar cada parte de la historia.
-        </p>
-        <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {['Sin experiencia', 'Sin mostrar tu rostro', 'Sin crear contenido diario', 'Sin atender clientes', 'Sin comenzar desde cero'].map((t) => (
-            <div key={t} className="border border-gold/20 bg-wine/10 px-3 py-3 text-ivory">
+        <div className="mt-6 grid gap-2 sm:grid-cols-2">
+          {[
+            'Sin experiencia previa',
+            'Sin mostrar tu rostro',
+            'Sin empezar en página en blanco',
+            'Sin novela automática falsa',
+          ].map((t) => (
+            <div key={t} className="border border-gold/20 bg-wine/10 px-3 py-3 text-base text-ivory">
               {t}
             </div>
           ))}
         </div>
+      </section>
 
-        <h3 className="font-display mt-10 text-2xl text-ivory">Una historia. Diferentes formas de publicarla.</h3>
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
-          {[
-            ['Venta directa', 'Ofrece tu historia como producto digital usando una página y un checkout.'],
-            ['Marketplaces', 'Publica en plataformas donde las lectoras ya buscan historias.'],
-            ['Series', 'Convierte el universo en nuevos libros y personajes.'],
-            ['Contenido exclusivo', 'Ofrece capítulos anticipados, escenas extra o historias adicionales.'],
-          ].map(([t, d]) => (
-            <article key={t} className="border border-white/10 bg-elevated p-4">
-              <h4 className="font-display text-xl text-ivory">{t}</h4>
-              <p className="mt-2 text-sm text-ivory-muted">{d}</p>
-            </article>
-          ))}
+      <section className="mt-12">
+        <h2 className="font-display text-2xl text-ivory md:text-3xl">
+          Prueba Autora Oculta durante 7 días
+        </h2>
+        <p className="mt-3 text-lg text-ivory-muted">
+          Explora el método y comprueba si tiene sentido para tu proyecto. Si decides que no es para
+          ti, puedes solicitar el reembolso según las condiciones del checkout.
+        </p>
+      </section>
+
+      {/* BLOCO 6 — FAQ */}
+      <section className="mt-12">
+        <h2 className="font-display mb-4 text-3xl text-ivory">Preguntas frecuentes</h2>
+        <FAQAccordion />
+      </section>
+
+      {/* BLOCO 7 — Oferta repetida */}
+      <div className="mt-12">
+        <OfferBox
+          title="Desbloquea el método para desarrollar esta historia"
+          subtitle="Recibe la estructura, los personajes, los prompts y el paso a paso para transformar este concepto en un libro digital."
+          ctaId="offer_final"
+          ctaLabel={UNLOCK_CTA}
+        />
+      </div>
+
+      <section className="mt-14 text-center">
+        <h3 className="font-display text-3xl text-ivory md:text-4xl">
+          Tu identidad puede permanecer oculta.
+          <br />
+          Tu idea no tiene que quedarse guardada.
+        </h3>
+        <div className="mx-auto mt-6 max-w-md">
+          <CTAButton full onClick={() => goToCheckout('final')}>
+            {UNLOCK_CTA}
+          </CTAButton>
         </div>
-
-        <section className="mt-12">
-          <h3 className="font-display text-2xl text-ivory">Prueba Autora Oculta durante 7 días</h3>
-          <p className="mt-3 text-ivory-muted">
-            Explora el método, revisa las estructuras y comprueba si este sistema tiene sentido para tu proyecto. Si dentro del plazo informado decides que no es para ti, podrás solicitar el reembolso conforme a las condiciones de la plataforma de pago.
-          </p>
-        </section>
-
-        <section className="mt-12">
-          <h3 className="font-display mb-4 text-2xl text-ivory">Preguntas frecuentes</h3>
-          <FAQAccordion />
-        </section>
-
-        <div className="mt-10">
-          <OfferBox title="Comienza hoy tu proyecto como Autora Oculta" ctaId="offer_final" />
-        </div>
-
-        <section className="mt-14 text-center">
-          <h3 className="font-display text-3xl text-ivory md:text-4xl">
-            Tu identidad puede permanecer oculta.
-            <br />
-            Tu historia no tiene que quedarse guardada.
-          </h3>
-          <div className="mx-auto mt-6 max-w-md">
-            <CTAButton full onClick={() => goToCheckout('final')}>
-              Quiero convertir mi idea en una historia
-            </CTAButton>
-          </div>
-          <p className="mt-3 text-ivory-muted">
-            Acceso inmediato por <strong className="text-gold-soft">{APP_CONFIG.PRICE_CURRENT}</strong>
-          </p>
-          <p className="mt-6 text-sm">
-            <Link to="/" className="text-ivory-faint hover:text-gold-soft">
-              Volver al inicio
-            </Link>
-          </p>
-        </section>
+        <p className="mt-6 text-base">
+          <Link to="/" className="text-ivory-faint hover:text-gold-soft">
+            Volver al inicio
+          </Link>
+        </p>
       </section>
 
       <StickyUnlockBar visible={showSticky} />

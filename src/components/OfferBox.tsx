@@ -4,6 +4,7 @@ import { goToCheckout } from '@/lib/analytics'
 
 type Props = {
   title?: string
+  subtitle?: string
   ctaLabel?: string
   ctaId?: string
   /** Solo el primer OfferBox de la página debe anclar #oferta */
@@ -11,32 +12,33 @@ type Props = {
 }
 
 export function OfferBox({
-  title = 'Desbloquea el método para desarrollar tu historia',
-  ctaLabel = 'Desbloquear ahora',
+  title = 'Tu historia ya tiene un nombre, un conflicto y un universo. Ahora necesitas el método para terminarla.',
+  subtitle = 'Desbloquea la estructura de capítulos, los perfiles de personajes, los prompts y el plan de publicación para desarrollar tu proyecto paso a paso.',
+  ctaLabel,
   ctaId = 'offer',
   anchor = false,
 }: Props) {
+  const label = ctaLabel ?? `Desbloquear mi proyecto por ${APP_CONFIG.PRICE_CURRENT}`
+
   return (
     <div
       id={anchor ? 'oferta' : undefined}
-      className="rounded-[2px] border border-gold/35 bg-gradient-to-b from-wine/30 to-bg p-6 text-center shadow-[0_0_60px_rgba(92,26,46,0.25)] md:p-8"
+      className="rounded-[2px] border border-gold/35 bg-gradient-to-b from-wine/30 to-bg p-6 text-center md:p-8"
     >
       <p className="font-accent text-[0.68rem] tracking-[0.2em] text-gold uppercase">
-        Acceso completo · {APP_CONFIG.PRICE_CURRENT}
+        Continuación de tu proyecto
       </p>
-      <h3 className="font-display mt-3 text-3xl text-ivory md:text-4xl">{title}</h3>
-      <p className="mx-auto mt-4 max-w-lg text-ivory-muted">
-        Ya tienes el concepto. Ahora recibes la estructura, los prompts y el plan para convertirlo en un proyecto que puedas publicar — usando ChatGPT u otra IA.
-      </p>
+      <h3 className="font-display mt-3 text-2xl leading-snug text-ivory md:text-3xl">{title}</h3>
+      <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-ivory-muted">{subtitle}</p>
 
-      <ul className="mx-auto mt-6 max-w-md space-y-2 text-left text-sm text-ivory-muted" role="list">
+      <ul className="mx-auto mt-6 max-w-md space-y-2 text-left text-base text-ivory-muted" role="list">
         {[
+          'Tu proyecto inicial guardado (título, seudónimo, premisa, conflicto)',
           'Estructura de capítulos + evolución del romance',
-          'Prompts listos para desarrollar cada etapa',
-          'Sinopsis, descripción de venta y seudónimo',
-          'Guía de publicación y plan de 7 días',
+          'Prompts listos para desarrollar cada etapa con IA',
+          'Sinopsis, descripción de venta y plan de 7 días',
         ].map((item) => (
-          <li key={item} className="flex gap-2 border border-white/10 bg-elevated/50 px-3 py-2">
+          <li key={item} className="flex gap-2 border border-white/10 bg-elevated/50 px-3 py-2.5">
             <span className="text-gold" aria-hidden="true">
               —
             </span>
@@ -49,15 +51,18 @@ export function OfferBox({
         Precio normal <s>{APP_CONFIG.PRICE_REFERENCE}</s>
       </p>
       <p className="font-display text-5xl text-gold-soft">{APP_CONFIG.PRICE_CURRENT}</p>
-      <p className="mt-1 text-sm text-ivory-faint">Un solo pago · acceso inmediato</p>
+      <p className="mt-1 text-base text-ivory-faint">Un solo pago · acceso inmediato</p>
 
       <div className="mt-6">
         <CTAButton full onClick={() => goToCheckout(ctaId)}>
-          {ctaLabel} · {APP_CONFIG.PRICE_CURRENT}
+          {label}
         </CTAButton>
       </div>
-      <p className="mt-3 text-sm text-ivory-faint">
-        Prueba 7 días. Si no es para ti, reembolso según el checkout.
+      <p className="mt-3 text-base text-ivory-faint">
+        No es una novela completa automática. Es el método para desarrollar esta idea.
+      </p>
+      <p className="mt-2 text-sm text-ivory-faint">
+        Prueba 7 días. Reembolso según el checkout.
       </p>
     </div>
   )
