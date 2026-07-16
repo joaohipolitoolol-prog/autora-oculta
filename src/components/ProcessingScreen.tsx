@@ -154,31 +154,8 @@ export function ProcessingScreen({ answers, onDone }: Props) {
               className="transition-[stroke-dasharray] duration-300 ease-out"
             />
           </svg>
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center gap-1"
-            style={{ animation: finishing ? undefined : 'ao-breathe 3.2s ease-in-out infinite' }}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 36 36"
-              fill="none"
-              className="text-gold-soft opacity-90"
-            >
-              <path
-                d="M6 16c0-6.5 5.2-11 12-11s12 4.5 12 11c0 5.5-3.2 9.2-6.5 11.2-.8.5-1.5-.2-1.5-1v-2.4c0-.6-.4-1.1-.9-1.3C19.2 21.8 18.2 21.5 18 21.5s-1.2.3-3.1 1c-.5.2-.9.7-.9 1.3v2.4c0 .8-.7 1.5-1.5 1C9.2 25.2 6 21.5 6 16Z"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M13.5 16.5c.4-.8 1.1-1.3 1.8-1.3M22.5 16.5c-.4-.8-1.1-1.3-1.8-1.3"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="font-display text-lg tabular-nums leading-none text-ivory">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="font-display text-2xl tabular-nums leading-none text-ivory">
               {Math.round(smoothProgress)}%
             </span>
           </div>
