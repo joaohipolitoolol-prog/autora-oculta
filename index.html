@@ -3,24 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Autora Oculta | Crea historias digitales bajo un seudónimo</title>
-  <meta name="description" content="Descubre un método guiado para crear historias de dark romance, desarrollar personajes, organizar capítulos y publicar bajo un seudónimo." />
+  <title>Autora Oculta | Crea y vende historias digitales bajo un seudónimo</title>
+  <meta name="description" content="Descubre cómo crear y vender historias digitales bajo un seudónimo, sin mostrar tu rostro. Método guiado con estructuras e inteligencia artificial." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0a0608" />
   <link rel="canonical" href="/" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Autora Oculta | Crea historias digitales bajo un seudónimo" />
-  <meta property="og:description" content="Descubre un método guiado para crear historias de dark romance, desarrollar personajes, organizar capítulos y publicar bajo un seudónimo." />
+  <meta property="og:title" content="Autora Oculta | Crea y vende historias digitales bajo un seudónimo" />
+  <meta property="og:description" content="Descubre cómo crear y vender historias digitales bajo un seudónimo, sin mostrar tu rostro." />
   <meta property="og:image" content="assets/og-image.webp" />
   <meta property="og:locale" content="es_LA" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Autora Oculta | Crea historias digitales bajo un seudónimo" />
-  <meta name="twitter:description" content="Descubre un método guiado para crear historias de dark romance, desarrollar personajes, organizar capítulos y publicar bajo un seudónimo." />
+  <meta name="twitter:title" content="Autora Oculta | Crea y vende historias digitales bajo un seudónimo" />
+  <meta name="twitter:description" content="Descubre cómo crear y vender historias digitales bajo un seudónimo, sin mostrar tu rostro." />
   <meta name="twitter:image" content="assets/og-image.webp" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,9 +27,7 @@
 
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Meta Pixel + GA placeholders: se inicializan desde js/config.js y js/main.js -->
   <script>
-    // UTM capture early
     window.__UTM__ = (function () {
       try {
         var p = new URLSearchParams(window.location.search);
@@ -55,42 +51,50 @@
 
   <!-- ========== HERO ========== -->
   <header class="hero" id="inicio">
-    <div class="hero__media" aria-hidden="true">
-      <img
-        src="assets/hero-autora-oculta.webp"
-        alt=""
-        width="1536"
-        height="1024"
-        fetchpriority="high"
-        decoding="async"
-      />
-      <div class="hero__veil"></div>
-    </div>
+    <div class="container hero__layout">
+      <div class="hero__content">
+        <p class="brand reveal">Autora Oculta</p>
+        <p class="seal reveal delay-1">Una nueva forma de crear productos digitales</p>
 
-    <div class="container hero__content">
-      <p class="brand reveal">Autora Oculta</p>
-      <p class="seal reveal delay-1">Una nueva forma de crear productos digitales</p>
+        <h1 class="hero__title reveal delay-2">
+          Descubre cómo crear y vender historias digitales bajo un seudónimo, sin mostrar tu rostro
+        </h1>
 
-      <h1 class="hero__title reveal delay-2">
-        Crea historias de dark romance bajo un seudónimo y descubre cómo convertirlas en libros digitales
-      </h1>
+        <p class="hero__sub reveal delay-3">
+          Usa estructuras guiadas e inteligencia artificial para transformar ideas de dark romance en productos digitales, incluso si nunca has escrito un libro.
+        </p>
 
-      <p class="hero__sub reveal delay-3">
-        No necesitas ser escritora, mostrar tu rostro o pasar meses frente a una página en blanco. Con Autora Oculta tendrás una estructura guiada para transformar una idea en personajes, capítulos, una identidad secreta y tu primer proyecto listo para publicar.
-      </p>
+        <p class="hero__hook reveal delay-3">
+          Mientras miles de mujeres pagan por historias de romance oscuro, nuevas autoras están creando libros digitales desde casa usando nombres ficticios.
+        </p>
 
-      <ul class="trust-row reveal delay-4" role="list">
-        <li>Acceso inmediato</li>
-        <li>Método paso a paso</li>
-        <li>Puedes comenzar desde cero</li>
-      </ul>
+        <ul class="trust-row reveal delay-4" role="list">
+          <li>Sin mostrar tu rostro</li>
+          <li>Sin ser escritora</li>
+          <li>Acceso inmediato</li>
+        </ul>
 
-      <div class="hero__cta reveal delay-4">
-        <a class="btn btn--primary js-checkout" href="#oferta" data-cta="hero">
-          Quiero crear mi primera historia
-        </a>
-        <p class="price-note">Acceso completo por solo <strong>US$ 7,49</strong>.</p>
-        <p class="micro">Producto digital. No se enviará ningún material físico.</p>
+        <div class="hero__cta reveal delay-4">
+          <a class="btn btn--primary btn--hero js-checkout" href="#oferta" data-cta="hero">
+            Quiero crear mi primera historia
+          </a>
+          <p class="price-note price-note--hero">
+            Acceso completo por solo <strong>US$ 7,49</strong>
+            <span class="price-note__was"> · antes <s>US$ 27</s></span>
+          </p>
+          <p class="micro">Producto digital. No se enviará ningún material físico.</p>
+        </div>
+      </div>
+
+      <div class="hero__media reveal delay-2">
+        <img
+          src="assets/hero-autora-oculta.webp"
+          alt="Escritorio oscuro con máscara, cuaderno y laptop: identidad secreta de una autora"
+          width="1536"
+          height="1024"
+          fetchpriority="high"
+          decoding="async"
+        />
       </div>
     </div>
   </header>
@@ -102,11 +106,15 @@
         <div class="section__intro reveal">
           <h2 id="oportunidad-title">Hay un mercado de lectoras pagando por historias que casi nadie se atreve a contar</h2>
           <div class="prose">
-            <p>Cada día, miles de mujeres buscan historias sobre mafiosos, hombres obsesivos, romances prohibidos, secretos, peligro, poder y personajes moralmente ambiguos.</p>
-            <p>Estas historias dominan comunidades de lectura, redes sociales, aplicaciones y plataformas digitales.</p>
-            <p>Pero mientras la mayoría solo observa a las lectoras, muy pocas personas están prestando atención a la oportunidad que existe detrás de esas historias.</p>
-            <p class="prose__highlight">Con una buena idea, una estructura clara y una identidad bajo seudónimo, es posible transformar una historia en un producto digital que puede ser publicado y ofrecido a nuevas lectoras.</p>
+            <p>Cada día, miles de mujeres buscan historias sobre mafiosos, hombres obsesivos, romances prohibidos, secretos, peligro y personajes moralmente ambiguos.</p>
+            <p>Estas historias dominan comunidades de lectura, redes sociales y plataformas digitales.</p>
+            <p>Mientras la mayoría solo observa a las lectoras, muy pocas personas están creando para ese mercado.</p>
           </div>
+        </div>
+
+        <div class="model-box reveal">
+          <p class="model-box__label">El modelo</p>
+          <p class="model-box__text">Creas una historia digital, publicas bajo un seudónimo y puedes venderla directamente o en plataformas de lectura.</p>
         </div>
 
         <ul class="tropes reveal" role="list">
@@ -119,6 +127,51 @@
           <li>Sociedades secretas</li>
           <li>Romance gótico</li>
         </ul>
+
+        <div class="section__cta reveal">
+          <a class="btn btn--primary js-checkout" href="#oferta" data-cta="oportunidad">
+            Quiero crear mi primera historia
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MOCKUP TEMPRANO ========== -->
+    <section class="section section--product" id="producto" aria-labelledby="product-title">
+      <div class="container">
+        <div class="section__intro section__intro--center reveal">
+          <p class="eyebrow">El sistema</p>
+          <h2 id="product-title">No es un PDF suelto. Es un panel para construir tu proyecto</h2>
+          <p class="lead">Desde la idea hasta la identidad secreta y la publicación, todo organizado en un solo lugar.</p>
+        </div>
+
+        <figure class="product-shot reveal">
+          <img
+            src="assets/panel-producto.webp"
+            alt="Panel de Autora Oculta en laptop y celular con menús de Mi Proyecto, Crear Universo, Personajes, Estructura, Prompts, Identidad y Publicación"
+            width="1536"
+            height="1024"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <ul class="inventory inventory--compact reveal" role="list">
+          <li><strong>30</strong> combinaciones de historias</li>
+          <li><strong>50</strong> tropes y conflictos</li>
+          <li><strong>20</strong> modelos de protagonistas</li>
+          <li><strong>20</strong> intereses amorosos</li>
+          <li><strong>25</strong> capítulos de estructura</li>
+          <li><strong>Prompts</strong> para cada etapa</li>
+          <li><strong>Seudónimo</strong> + identidad</li>
+          <li><strong>Modelo</strong> de venta</li>
+        </ul>
+
+        <div class="section__cta reveal">
+          <a class="btn btn--primary js-checkout" href="#oferta" data-cta="mockup">
+            Quiero crear mi primera historia
+          </a>
+        </div>
       </div>
     </section>
 
@@ -126,13 +179,11 @@
     <section class="section section--belief" id="metodo-vs" aria-labelledby="belief-title">
       <div class="container">
         <div class="section__intro reveal">
-          <h2 id="belief-title">No necesitas haber nacido escritora</h2>
+          <h2 id="belief-title">No necesitas convertirte en escritora profesional</h2>
           <div class="prose">
-            <p>El mayor error es pensar que para crear una historia necesitas inspiración infinita, años de experiencia o talento extraordinario.</p>
-            <p>La mayoría de las personas se bloquea porque intenta comenzar desde una página completamente vacía.</p>
-            <p>Autora Oculta cambia ese proceso.</p>
-            <p>En lugar de adivinar qué escribir, eliges el tipo de historia, los personajes, el conflicto, la fantasía emocional y el nivel de intensidad.</p>
-            <p>Después sigues una estructura guiada para transformar esas elecciones en una historia organizada.</p>
+            <p>Solo necesitas una idea, una estructura y un mercado dispuesto a leerla.</p>
+            <p>Tu primera historia puede comenzar hoy, aunque nunca hayas escrito más de una página.</p>
+            <p>En lugar de adivinar frente a una página vacía, eliges la fantasía, los personajes, el conflicto y sigues una estructura guiada.</p>
           </div>
         </div>
 
@@ -143,18 +194,18 @@
               <li>Página en blanco</li>
               <li>Ideas desorganizadas</li>
               <li>Meses sin terminar</li>
-              <li>Miedo de mostrar el proyecto</li>
+              <li>Miedo de mostrarte</li>
               <li>Sin saber cómo vender</li>
             </ul>
           </article>
           <article class="compare__col compare__col--new">
             <h3>Método Autora Oculta</h3>
             <ul>
-              <li>Ideas guiadas</li>
+              <li>Fantasías ya validadas</li>
               <li>Personajes estructurados</li>
               <li>Plan de capítulos</li>
               <li>Identidad bajo seudónimo</li>
-              <li>Opciones de publicación y venta</li>
+              <li>Publicación y venta digital</li>
             </ul>
           </article>
         </div>
@@ -165,41 +216,47 @@
     <section class="section section--method" id="metodo" aria-labelledby="method-title">
       <div class="container">
         <div class="section__intro section__intro--center reveal">
-          <p class="eyebrow">El mecanismo</p>
-          <h2 id="method-title">Conoce el Método Autora Oculta</h2>
-          <p class="lead">Un sistema dividido en cuatro etapas para llevarte desde una idea inicial hasta tu primer proyecto literario.</p>
+          <p class="eyebrow">Cómo funciona</p>
+          <h2 id="method-title">El Método Autora Oculta</h2>
+          <p class="lead">Cuatro etapas para pasar de una idea a un producto digital listo para publicar y vender.</p>
         </div>
 
         <ol class="stages reveal">
           <li class="stage">
             <span class="stage__num" aria-hidden="true">01</span>
             <div class="stage__body">
-              <h3>Descubrir</h3>
-              <p>Identifica las fantasías, conflictos y tipos de personajes que despiertan mayor curiosidad en las lectoras.</p>
+              <h3>Elige una fantasía validada</h3>
+              <p>Escoges el tipo de historia, el conflicto y la emoción que ya atrae a lectoras de romance oscuro.</p>
             </div>
           </li>
           <li class="stage">
             <span class="stage__num" aria-hidden="true">02</span>
             <div class="stage__body">
-              <h3>Construir</h3>
-              <p>Crea el universo, la protagonista, el interés amoroso, los secretos, el peligro y la tensión emocional.</p>
+              <h3>Crea personajes y conflictos con ayuda guiada</h3>
+              <p>Construyes la protagonista, el interés amoroso, los secretos y la tensión emocional con modelos claros.</p>
             </div>
           </li>
           <li class="stage">
             <span class="stage__num" aria-hidden="true">03</span>
             <div class="stage__body">
-              <h3>Escribir</h3>
-              <p>Utiliza estructuras y comandos guiados para desarrollar sinopsis, capítulos, escenas, diálogos y revisiones.</p>
+              <h3>Convierte la estructura en capítulos</h3>
+              <p>Usas estructuras y comandos para desarrollar sinopsis, escenas, diálogos y revisiones sin empezar de cero.</p>
             </div>
           </li>
           <li class="stage">
             <span class="stage__num" aria-hidden="true">04</span>
             <div class="stage__body">
-              <h3>Publicar</h3>
-              <p>Crea un seudónimo, prepara la identidad visual, organiza el libro y conoce formas de publicarlo o venderlo digitalmente.</p>
+              <h3>Publica bajo un seudónimo y aprende cómo vender</h3>
+              <p>Creas tu identidad secreta, organizas el libro y conoces formas de publicarlo o venderlo digitalmente.</p>
             </div>
           </li>
         </ol>
+
+        <div class="section__cta reveal">
+          <a class="btn btn--primary js-checkout" href="#oferta" data-cta="metodo">
+            Quiero crear mi primera historia
+          </a>
+        </div>
       </div>
     </section>
 
@@ -216,7 +273,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 6.5c2.5-2 5.5-2 8 0s5.5 2 8 0V19c-2.5 2-5.5 2-8 0s-5.5-2-8 0V6.5z"/><path d="M11 6.5v12.5"/></svg>
             </div>
             <h3>Mapa del Mercado Oscuro</h3>
-            <p>Una introducción práctica al universo del dark romance, sus categorías y las emociones que mueven a las lectoras.</p>
+            <p>Categorías, emociones y deseos que mueven a las lectoras.</p>
           </article>
 
           <article class="deliverable reveal">
@@ -224,7 +281,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
             <h3>Creador de Universo</h3>
-            <p>Un sistema para elegir escenario, trope, conflicto, secretos y dirección emocional.</p>
+            <p>Escenario, trope, conflicto, secretos y dirección emocional.</p>
           </article>
 
           <article class="deliverable reveal">
@@ -232,7 +289,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 19c1-3.5 3.2-5 5.5-5s4.5 1.5 5.5 5"/><path d="M13 19c.6-2.2 1.9-3.5 3.5-3.5 1.2 0 2.2.7 3 2"/></svg>
             </div>
             <h3>Personajes Imposibles de Olvidar</h3>
-            <p>Modelos para crear protagonistas femeninas fuertes e intereses amorosos intensos y moralmente ambiguos.</p>
+            <p>Protagonistas fuertes e intereses amorosos moralmente ambiguos.</p>
           </article>
 
           <article class="deliverable reveal">
@@ -240,7 +297,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/><path d="M4 5l8 4 8-4"/></svg>
             </div>
             <h3>Estructura de Historia Magnética</h3>
-            <p>Un mapa para organizar apertura, tensión, aproximación, ruptura, clímax y final.</p>
+            <p>Apertura, tensión, aproximación, ruptura, clímax y final.</p>
           </article>
 
           <article class="deliverable reveal">
@@ -248,7 +305,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 7h14v11H5z"/><path d="M8 10h8M8 13h6"/><path d="M14 16l2.5-2.5L19 16"/></svg>
             </div>
             <h3>Comandos de la Autora Oculta</h3>
-            <p>Prompts organizados para desarrollar ideas, escenas, diálogos, capítulos y revisiones.</p>
+            <p>Prompts para ideas, escenas, diálogos, capítulos y revisiones.</p>
           </article>
 
           <article class="deliverable reveal">
@@ -256,7 +313,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3c3.5 2 6 5.2 6 9.2A6 6 0 0 1 6 12.2C6 8.2 8.5 5 12 3z"/><path d="M9.5 13.5c.8 1.2 1.7 1.8 2.5 1.8s1.7-.6 2.5-1.8"/></svg>
             </div>
             <h3>Identidad Secreta</h3>
-            <p>Guía para crear nombre artístico, biografía, estética visual y posicionamiento bajo un seudónimo.</p>
+            <p>Nombre artístico, biografía, estética y posicionamiento.</p>
           </article>
 
           <article class="deliverable reveal">
@@ -264,7 +321,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 8l8-4 8 4v9l-8 4-8-4V8z"/><path d="M12 12v9M4 8l8 4 8-4"/></svg>
             </div>
             <h3>Publicación y Venta</h3>
-            <p>Opciones para organizar, publicar y ofrecer historias digitales en internet.</p>
+            <p>Opciones para publicar y ofrecer historias digitales online.</p>
           </article>
 
           <article class="deliverable reveal">
@@ -272,88 +329,55 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 4h9l3 3v13H6z"/><path d="M15 4v3h3"/><path d="M9 12l2 2 4-4"/></svg>
             </div>
             <h3>Plan Primer Libro</h3>
-            <p>Un checklist para acompañar el proyecto desde la idea hasta la publicación.</p>
+            <p>Checklist desde la idea hasta la publicación.</p>
           </article>
         </div>
 
         <div class="section__cta reveal">
-          <a class="btn btn--primary js-checkout" href="#oferta" data-cta="deliverables">
+          <a class="btn btn--primary js-checkout" href="#oferta" data-cta="contenido">
             Quiero crear mi primera historia
           </a>
         </div>
       </div>
     </section>
 
-    <!-- ========== TANGIBILIZACIÓN ========== -->
-    <section class="section section--tangible" id="dentro" aria-labelledby="tangible-title">
-      <div class="container">
-        <div class="section__intro reveal">
-          <h2 id="tangible-title">No recibirás solo teoría</h2>
-          <p class="lead">Dentro de Autora Oculta encontrarás materiales listos para usar que reducen la cantidad de decisiones y te ayudan a avanzar más rápido.</p>
-        </div>
-
-        <ul class="inventory reveal" role="list">
-          <li><strong>30</strong> combinaciones de historias</li>
-          <li><strong>50</strong> tropes, secretos y conflictos</li>
-          <li><strong>20</strong> modelos de protagonistas</li>
-          <li><strong>20</strong> modelos de intereses amorosos</li>
-          <li><strong>Hasta 25</strong> capítulos de estructura</li>
-          <li><strong>Prompts</strong> para cada etapa</li>
-          <li><strong>Creador</strong> de seudónimo</li>
-          <li><strong>Modelo</strong> de sinopsis</li>
-          <li><strong>Modelo</strong> de descripción de venta</li>
-          <li><strong>Checklist</strong> de publicación</li>
-          <li><strong>Proyecto</strong> completo de ejemplo</li>
-          <li><strong>Plan</strong> práctico de 7 días</li>
-        </ul>
-
-        <figure class="product-shot reveal">
-          <img
-            src="assets/panel-producto.webp"
-            alt="Vista del panel de Autora Oculta en laptop y celular, con menús de Mi Proyecto, Crear Universo, Personajes, Estructura, Prompts, Identidad y Publicación"
-            width="1536"
-            height="1024"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption class="sr-only">Panel del producto Autora Oculta</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- ========== TRANSFORMACIÓN ========== -->
+    <!-- ========== EJEMPLO ========== -->
     <section class="section section--transform" id="ejemplo" aria-labelledby="transform-title">
       <div class="container">
         <div class="section__intro section__intro--center reveal">
           <h2 id="transform-title">De una idea simple a un universo completo</h2>
+          <p class="lead">Así se ve el mecanismo cuando una decisión guiada se convierte en proyecto.</p>
         </div>
 
-        <div class="transform-flow">
-          <article class="transform-step reveal">
-            <p class="transform-step__label">Idea inicial</p>
-            <p class="transform-step__quote">“Una joven hereda una propiedad aislada que pertenece parcialmente a una familia peligrosa.”</p>
-          </article>
+        <div class="proof reveal">
+          <div class="proof__idea">
+            <p class="proof__label">Idea</p>
+            <p class="proof__quote">Una heredera y una familia peligrosa.</p>
+            <p class="proof__detail">“Una joven hereda una propiedad aislada que pertenece parcialmente a una familia peligrosa.”</p>
+          </div>
 
-          <article class="transform-step reveal">
-            <p class="transform-step__label">Desarrollo</p>
-            <ul class="transform-step__list">
-              <li><span>Trope:</span> enemies to lovers</li>
-              <li><span>Escenario:</span> propiedad rural aislada</li>
-              <li><span>Interés amoroso:</span> heredero frío y obsesivo</li>
-              <li><span>Conflicto:</span> una deuda familiar escondida</li>
-              <li><span>Secreto:</span> él sabía de su llegada antes que ella</li>
-              <li><span>Promesa emocional:</span> peligro para todos, protección para ella</li>
+          <div class="proof__result">
+            <p class="proof__label">Resultado generado</p>
+            <h3 class="proof__title">La Heredera de Montenegro</h3>
+            <ul class="proof__list" role="list">
+              <li><span>Protagonistas</span> Ella + heredero frío y obsesivo</li>
+              <li><span>Conflicto</span> Una deuda familiar escondida</li>
+              <li><span>Trope</span> Enemies to lovers</li>
+              <li><span>Secreto</span> Él sabía de su llegada antes que ella</li>
+              <li><span>Sinopsis</span> Modelo listo para revisar y adaptar</li>
+              <li><span>Estructura</span> Hasta 25 capítulos organizados</li>
+              <li><span>Descripción de venta</span> Texto comercial para publicar</li>
             </ul>
-          </article>
-
-          <article class="transform-step reveal">
-            <p class="transform-step__label">Resultado</p>
-            <h3 class="transform-step__title">La Heredera de Montenegro</h3>
-            <p>Sinopsis, personajes, estructura de capítulos, escenas centrales, identidad visual y descripción comercial.</p>
-          </article>
+          </div>
         </div>
 
         <p class="closing-line reveal">No comienzas con un libro. Comienzas con una decisión guiada.</p>
+
+        <div class="section__cta reveal">
+          <a class="btn btn--primary js-checkout" href="#oferta" data-cta="ejemplo">
+            Quiero crear mi primera historia
+          </a>
+        </div>
       </div>
     </section>
 
@@ -362,26 +386,24 @@
       <div class="container">
         <div class="audience-grid">
           <article class="audience audience--yes reveal">
-            <h2 id="audience-title">Autora Oculta fue creado para ti si…</h2>
+            <h2 id="audience-title">Es para ti si…</h2>
             <ul class="check-list" role="list">
-              <li>Quieres una forma diferente de crear un producto digital.</li>
+              <li>Quieres crear un producto digital diferente.</li>
               <li>No quieres aparecer en videos.</li>
               <li>No te consideras escritora.</li>
-              <li>Tienes muchas ideas, pero no sabes organizarlas.</li>
-              <li>Te atraen las historias intensas y misteriosas.</li>
-              <li>Quieres aprender a utilizar inteligencia artificial con dirección.</li>
-              <li>Te gustaría crear bajo una identidad separada de tu vida personal.</li>
-              <li>Quieres conocer un mercado digital todavía poco explorado.</li>
+              <li>Te atraen historias intensas y misteriosas.</li>
+              <li>Quieres usar IA con dirección clara.</li>
+              <li>Prefieres crear bajo un seudónimo.</li>
             </ul>
           </article>
 
           <article class="audience audience--no reveal">
-            <h2>Este producto no es para ti si…</h2>
+            <h2>No es para ti si…</h2>
             <ul class="cross-list" role="list">
               <li>Buscas dinero rápido sin crear nada.</li>
-              <li>No estás dispuesta a revisar y mejorar tus historias.</li>
+              <li>No quieres revisar ni mejorar tus textos.</li>
               <li>Esperas resultados garantizados.</li>
-              <li>Quieres que una herramienta haga absolutamente todo por ti.</li>
+              <li>Quieres que una herramienta haga todo sola.</li>
             </ul>
           </article>
         </div>
@@ -412,7 +434,7 @@
               <span class="accordion__icon" aria-hidden="true"></span>
             </button>
             <div class="accordion__panel" hidden>
-              <p>La inteligencia artificial funciona como una herramienta de apoyo. Tú eliges la idea, los personajes, la dirección, el tono y las decisiones creativas.</p>
+              <p>La IA es una herramienta de apoyo. Tú eliges la idea, los personajes, la dirección, el tono y las decisiones creativas.</p>
             </div>
           </div>
 
@@ -422,7 +444,7 @@
               <span class="accordion__icon" aria-hidden="true"></span>
             </button>
             <div class="accordion__panel" hidden>
-              <p>No. Puedes crear el proyecto bajo un seudónimo y mantener tu identidad personal separada.</p>
+              <p>No. Puedes crear y publicar bajo un seudónimo, separando tu identidad personal del proyecto.</p>
             </div>
           </div>
 
@@ -432,7 +454,7 @@
               <span class="accordion__icon" aria-hidden="true"></span>
             </button>
             <div class="accordion__panel" hidden>
-              <p>No. Tú eliges el nivel de intensidad. El dark romance también puede trabajar con tensión, peligro, obsesión, misterio y personajes moralmente ambiguos.</p>
+              <p>No. Tú eliges el nivel de intensidad: tensión, peligro, obsesión, misterio o personajes moralmente ambiguos.</p>
             </div>
           </div>
 
@@ -442,7 +464,7 @@
               <span class="accordion__icon" aria-hidden="true"></span>
             </button>
             <div class="accordion__panel" hidden>
-              <p>No es obligatorio. El método presenta diferentes posibilidades de publicación y venta digital.</p>
+              <p>No es obligatorio. El método presenta distintas formas de publicación y venta digital.</p>
             </div>
           </div>
 
@@ -452,7 +474,7 @@
               <span class="accordion__icon" aria-hidden="true"></span>
             </button>
             <div class="accordion__panel" hidden>
-              <p>Sí. El contenido puede ser consultado desde celular, tablet o computadora.</p>
+              <p>Sí. Puedes consultar el contenido desde celular, tablet o computadora.</p>
             </div>
           </div>
 
@@ -462,9 +484,15 @@
               <span class="accordion__icon" aria-hidden="true"></span>
             </button>
             <div class="accordion__panel" hidden>
-              <p>Acceso conforme a las condiciones mostradas en el checkout. Revisa los detalles al completar tu compra.</p>
+              <p>Acceso conforme a las condiciones mostradas en el checkout.</p>
             </div>
           </div>
+        </div>
+
+        <div class="section__cta reveal">
+          <a class="btn btn--primary js-checkout" href="#oferta" data-cta="faq">
+            Quiero crear mi primera historia
+          </a>
         </div>
       </div>
     </section>
@@ -484,7 +512,7 @@
             <li>Personajes Imposibles de Olvidar</li>
             <li>Comandos y prompts</li>
             <li>Identidad Secreta</li>
-            <li>Guía de publicación</li>
+            <li>Guía de publicación y venta</li>
             <li>Proyecto de ejemplo</li>
             <li>Plan de 7 días</li>
             <li>Acceso inmediato</li>
@@ -524,7 +552,7 @@
       <div class="container container--narrow">
         <div class="final reveal">
           <h2 id="final-title">Tu identidad puede permanecer oculta. Tu historia no tiene que quedarse guardada.</h2>
-          <p>Da el primer paso para transformar una idea en personajes, capítulos, un universo propio y un proyecto digital que finalmente puedes publicar.</p>
+          <p>Da el primer paso para transformar una idea en un producto digital que puedes publicar y vender sin mostrar tu rostro.</p>
           <a class="btn btn--primary js-checkout" href="#oferta" data-cta="final" data-event="InitiateCheckout">
             Quiero ser una autora oculta
           </a>
@@ -534,7 +562,6 @@
     </section>
   </main>
 
-  <!-- ========== FOOTER ========== -->
   <footer class="footer" id="pie">
     <div class="container">
       <div class="footer__brand">
@@ -557,10 +584,10 @@
     </div>
   </footer>
 
-  <!-- CTA flotante mobile -->
   <div class="float-cta" id="float-cta" hidden>
     <a class="btn btn--primary btn--full js-checkout" href="#oferta" data-cta="float" data-event="InitiateCheckout">
-      Quiero crear mi primera historia
+      <span class="float-cta__text">Crear mi primera historia</span>
+      <span class="float-cta__price">US$ 7,49</span>
     </a>
   </div>
 
