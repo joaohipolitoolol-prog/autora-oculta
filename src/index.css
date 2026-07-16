@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0608;
+  --color-elevated: #120b10;
+  --color-soft: #160e14;
+  --color-wine: #5c1a2e;
+  --color-burgundy: #7a243a;
+  --color-purple: #1a0e1c;
+  --color-gold: #b8975a;
+  --color-gold-soft: #c9a96e;
+  --color-ivory: #f3ebe1;
+  --color-ivory-muted: rgba(243, 235, 225, 0.72);
+  --color-ivory-faint: rgba(243, 235, 225, 0.5);
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-accent: "Cinzel", var(--font-display);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    font-family: var(--font-body);
+    color: var(--color-ivory);
+    background:
+      radial-gradient(1000px 500px at 50% -10%, rgba(92, 26, 46, 0.28), transparent 60%),
+      radial-gradient(700px 400px at 100% 20%, rgba(42, 20, 40, 0.35), transparent 55%),
+      var(--color-bg);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(122, 36, 58, 0.55);
+    color: var(--color-ivory);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-accent {
+    font-family: var(--font-accent);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
